@@ -1,0 +1,3822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RYANS BLASTER</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid #e5e5e2;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:12px;flex-wrap:wrap}
+.topbar h1{font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.ai-badge{background:#EEEDFE;color:#3C3489;border:1px solid #AFA9EC;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:500}
+.container{max-width:880px;margin:0 auto;padding:24px 16px}
+.tabs{display:flex;background:#fff;border:1px solid #e5e5e2;border-radius:10px;overflow:hidden;margin-bottom:20px;width:fit-content}
+.tab{padding:9px 15px;font-size:13px;cursor:pointer;border:none;background:transparent;color:#666;font-family:inherit}
+.tab.active{background:#f5f5f3;color:#1a1a1a;font-weight:600}
+.tab:not(:last-child){border-right:1px solid #e5e5e2}
+.card{background:#fff;border:1px solid #e5e5e2;border-radius:12px;padding:20px;margin-bottom:16px}
+.slabel{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.upload-zone{border:2px dashed #d5d5d0;border-radius:10px;padding:32px;text-align:center;cursor:pointer}
+.upload-zone:hover{border-color:#999;background:#fafaf8}
+.upload-zone svg{margin-bottom:10px;color:#999}
+.upload-zone p{font-size:14px;color:#666}
+.upload-zone .hint{font-size:12px;color:#aaa;margin-top:6px}
+input[type=file]{display:none}
+textarea{width:100%;border:1px solid #e5e5e2;border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;color:#1a1a1a;background:#fff;resize:vertical;min-height:140px;line-height:1.65}
+textarea:focus{outline:none;border-color:#999}
+input[type=text],input[type=email],input[type=number],select{width:100%;border:1px solid #e5e5e2;border-radius:8px;padding:9px 12px;font-size:14px;font-family:inherit;color:#1a1a1a;background:#fff}
+input:focus,select:focus{outline:none;border-color:#999}
+.frow{margin-bottom:14px}
+.frow label{font-size:13px;color:#666;display:block;margin-bottom:5px;font-weight:500}
+.tag-btn{display:inline-flex;padding:3px 8px;border:1px solid #e5e5e2;border-radius:6px;font-size:11px;font-family:monospace;background:#f5f5f3;color:#666;cursor:pointer;margin:2px}
+.tag-btn:hover{background:#ede9fe;color:#4c1d95;border-color:#c4b5fd}
+.ctable{width:100%;font-size:13px;border-collapse:collapse}
+.ctable th{text-align:left;padding:7px 10px;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;border-bottom:1px solid #e5e5e2;background:#fafaf8}
+.ctable td{padding:8px 10px;border-bottom:1px solid #f0f0ee;color:#1a1a1a;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctable tr:last-child td{border-bottom:none}
+.ctable tr.sel td{background:#f0f4ff}
+.sbadge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.s-pending{background:#fef3c7;color:#92400e}
+.s-sent{background:#dcfce7;color:#166534}
+.s-error{background:#fee2e2;color:#991b1b}
+.s-sending{background:#dbeafe;color:#1e40af}
+.s-ai{background:#ede9fe;color:#4c1d95}
+.btn-p{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:inherit}
+.btn-p:hover{background:#333}
+.btn-p:disabled{opacity:.4;cursor:not-allowed}
+.btn-s{background:#fff;color:#1a1a1a;border:1px solid #e5e5e2;border-radius:8px;padding:9px 16px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.btn-s:hover{background:#f5f5f3}
+.btn-s:disabled{opacity:.4;cursor:not-allowed}
+.btn-ai{background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:inherit}
+.btn-ai:hover{background:#ddd6fe}
+.btn-ai:disabled{opacity:.4;cursor:not-allowed}
+.srow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.srow5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.stat{background:#fafaf8;border:1px solid #e5e5e2;border-radius:10px;padding:14px 16px}
+.stat .num{font-size:24px;font-weight:700;color:#1a1a1a}
+.stat .lbl{font-size:11px;color:#888;margin-top:3px}
+.pbox{background:#fafaf8;border:1px solid #e5e5e2;border-radius:8px;padding:14px;font-size:13px;color:#1a1a1a;line-height:1.7;white-space:pre-wrap;max-height:240px;overflow-y:auto;font-family:monospace}
+.prog-bar{height:6px;background:#f0f0ee;border-radius:3px;overflow:hidden;margin-top:10px}
+.prog-fill{height:100%;background:#4f46e5;border-radius:3px;transition:width .4s}
+.note{font-size:12px;color:#666;padding:10px 14px;background:#f0f7ff;border-radius:8px;border-left:3px solid #60a5fa;line-height:1.6;margin-top:10px}
+.note strong{color:#1e40af}
+.note-warn{font-size:12px;color:#92400e;padding:10px 14px;background:#fffbeb;border-radius:8px;border-left:3px solid #f59e0b;line-height:1.6}
+.note-danger{font-size:12px;color:#991b1b;padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:3px solid #ef4444;line-height:1.6}
+.note-green{font-size:12px;color:#166534;padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:3px solid #22c55e;line-height:1.6}
+.ai-panel{background:#faf5ff;border:1px solid #c4b5fd;border-radius:12px;padding:16px 20px;margin-bottom:16px}
+.ai-opener{font-size:13px;color:#4c1d95;font-style:italic;padding:8px 10px;background:#ede9fe;border-radius:6px;min-height:32px;line-height:1.6}
+.ai-opener[contenteditable]:focus{outline:2px solid #a78bfa}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #c4b5fd;border-top-color:#7c3aed;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.selrow{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px;color:#666}
+code{background:#f0f0ee;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:12px;color:#333}
+.server-check-box{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.server-check-box.offline{background:#fef2f2;border-color:#fca5a5}
+.gmail-fields{background:#fafaf8;border:1px solid #e5e5e2;border-radius:8px;padding:14px 16px;margin-top:10px}
+.dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;display:inline-block}
+.dot.online{background:#22c55e}
+.dot.offline{background:#ef4444}
+
+/* THROTTLE */
+.throttle-panel{background:#fff;border:1px solid #e5e5e2;border-radius:12px;padding:20px;margin-bottom:16px}
+.meter-bar{height:16px;background:#f0f0ee;border-radius:8px;overflow:hidden;position:relative;margin:10px 0 4px}
+.meter-fill{height:100%;border-radius:8px;transition:width .5s,background .4s}
+.meter-nums{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.meter-big{font-size:32px;font-weight:700}
+.meter-cap{font-size:14px;color:#888}
+.meter-right{text-align:right;font-size:12px;color:#888;line-height:1.6}
+.tier-marks{display:flex;justify-content:space-between;font-size:10px;color:#bbb;margin-top:2px}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.topt{background:#fafaf8;border:1px solid #e5e5e2;border-radius:8px;padding:12px 14px}
+.topt label{font-size:12px;color:#666;font-weight:500;display:block;margin-bottom:6px}
+
+/* TOAST */
+#toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;max-width:360px;line-height:1.5;pointer-events:all;box-shadow:0 4px 20px rgba(0,0,0,.15);animation:tIn .3s ease}
+.toast.info{background:#1e40af;color:#fff}
+.toast.warn{background:#d97706;color:#fff}
+.toast.danger{background:#dc2626;color:#fff}
+.toast.success{background:#15803d;color:#fff}
+.toast.purple{background:#7c3aed;color:#fff}
+.toast.fade{animation:tOut .4s ease forwards}
+@keyframes tIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tOut{to{transform:translateX(110%);opacity:0}}
+
+/* PAUSED BANNER */
+.paused-banner{background:#7c3aed;color:#fff;border-radius:10px;padding:16px 18px;display:none;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px}
+.paused-banner strong{font-size:14px;display:block}
+.paused-banner p{font-size:12px;opacity:.85;margin-top:2px}
+.btn-outline-white{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-outline-white:hover{background:rgba(255,255,255,.15)}
+
+/* TOPBAR LIMIT PILL */
+.limit-pill{display:flex;align-items:center;gap:7px;font-size:12px;color:#666;background:#fafaf8;border:1px solid #e5e5e2;border-radius:8px;padding:6px 12px}
+.limit-pill-bar{width:56px;height:5px;background:#e5e5e2;border-radius:3px;overflow:hidden}
+.limit-pill-fill{height:100%;border-radius:3px;transition:width .4s,background .4s}
+.server-row{display:flex;align-items:center;gap:6px;font-size:12px;color:#666}
+.filter-stat{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:500;margin:3px}
+.filter-stat.good{background:#dcfce7;color:#166534}
+.filter-stat.bad{background:#fee2e2;color:#991b1b}
+.filter-stat.warn{background:#fef3c7;color:#92400e}
+.unsub-list{width:100%;border:1px solid #e5e5e2;border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;color:#1a1a1a;background:#fff;min-height:80px;resize:vertical}
+.unsub-list:focus{outline:none;border-color:#999}
+</style>
+</head>
+<body>
+
+<div id="toasts"></div>
+
+<div class="topbar">
+  <h1>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+    RYANS BLASTER
+    <span class="ai-badge">✦ AI + Throttle</span>
+  </h1>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <button onclick="checkForUpdate()" id="updateBtn" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">&#x21BA; Check for update</button>
+    <div class="limit-pill">
+      <span id="pillIcon">📊</span>
+      <span id="pillText">Daily: 0 / 500</span>
+      <div class="limit-pill-bar"><div class="limit-pill-fill" id="pillFill" style="width:0%;background:#22c55e"></div></div>
+      <span id="pillRemain" style="color:#888">500 left</span>
+    </div>
+    <div class="server-row">
+      <div class="dot" id="serverDot"></div>
+      <span id="serverLabel">Checking...</span>
+      <button onclick="checkServer()" style="background:#1a1a1a;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-left:4px">&#x21BA; Check</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('contacts')">📋 Contacts</button>
+    <button class="tab" onclick="showTab('template')">✏️ Template</button>
+    <button class="tab" onclick="showTab('ai')">✦ AI Lines</button>
+    <button class="tab" onclick="showTab('sender')">⚙️ Gmail Setup</button>
+    <button class="tab" onclick="showTab('throttle')">🛡 Throttle</button>
+    <button class="tab" onclick="showTab('filters')">🔽 Filters</button>
+    <button class="tab" onclick="showTab('followup')" id="followupTab">🔁 Follow-ups <span id="followupBadge" style="display:none;background:#dc2626;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px">0</span></button>
+    <button class="tab" onclick="showTab('send')">🚀 Send</button>
+    <button class="tab" onclick="showTab('replies')" id="repliesTab">📨 Replies <span id="repliesBadge" style="display:none;background:#dc2626;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px">0</span></button>
+    <button class="tab" onclick="showTab('code')">📋 Code</button>
+  </div>
+
+  <!-- CONTACTS -->
+  <div id="tab-contacts">
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn-s" onclick="resetList()" id="resetListBtn" style="display:none;font-size:12px">&#x21BA; Reset list &amp; re-upload</button>
+      <button class="btn-s" onclick="resetStatuses()" id="resetStatusBtn" style="display:none;font-size:12px">&#x21BA; Mark all as pending (resend)</button>
+      <button class="btn-ai" onclick="triggerMerge()" id="mergeListBtn" style="display:none;font-size:12px;padding:6px 14px">&#x2795; Merge another list</button>
+      <span id="mergeStatus" style="font-size:12px;color:#166534;font-weight:600"></span>
+    </div>
+    <div class="card">
+      <div class="slabel">Upload your seller list</div>
+      <div class="upload-zone" onclick="document.getElementById('csvIn').click()" id="dropZone">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p>Click to upload or drag &amp; drop your CSV</p>
+        <p class="hint">Accepts xLeads, PropStream, BatchLeads exports &mdash; auto-detects columns. Supports <code>Email</code>, <code>Email 2</code>, <code>Email 3</code> &mdash; tries all three per contact.</p>
+      </div>
+      <input type="file" id="csvIn" accept=".csv" onchange="handleCSV(event)" />
+    </div>
+    <div id="contacts-section" style="display:none">
+      <div id="scrubSummaryBar" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#166534"></div>
+      <div class="srow" id="statsRow"></div>
+      <div class="card">
+        <div class="selrow">
+          <input type="checkbox" id="selAll" onchange="toggleAll(this.checked)" checked />
+          <label for="selAll" style="cursor:pointer;font-weight:500">Select all</label>
+          <button class="btn-s" onclick="selectOnlyMVVerified()" style="font-size:11px;padding:4px 10px;color:#166534;border-color:#86efac;margin-left:8px">✅ Select MV verified only</button>
+          <button class="btn-s" onclick="selectScrubbed()" style="font-size:11px;padding:4px 10px;color:#7c3aed;border-color:#c4b5fd;margin-left:4px">🧹 Select scrubbed only</button>
+          <span id="selCount" style="margin-left:auto;font-size:13px;color:#888">0 selected</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="ctable"><thead id="tHead"></thead><tbody id="tBody"></tbody></table>
+        </div>
+      </div>
+
+    </div>
+    <div id="no-contacts" style="text-align:center;padding:3rem 1rem;color:#aaa">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin-bottom:12px"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+      <p>Upload a CSV to get started</p>
+    </div>
+  </div>
+
+  <!-- TEMPLATE -->
+  <div id="tab-template" style="display:none">
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="slabel" style="margin-bottom:0">Saved campaigns</div>
+        <button class="btn-ai" style="padding:6px 14px;font-size:12px" onclick="saveTemplate()">Save current as campaign</button>
+      </div>
+      <div id="savedTemplates"><div style="font-size:13px;color:#aaa;padding:4px 0">No saved campaigns yet &mdash; write a template below and save it.</div></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:#1a1a1a" id="activeTemplateName">Default template</div>
+        <button class="btn-s" style="font-size:12px;padding:5px 12px" onclick="newTemplate()">+ New blank</button>
+      </div>
+      <div class="frow">
+        <label>Subject A <span style="font-size:11px;color:#888;font-weight:400">(primary)</span></label>
+        <input type="text" id="subj" value="Quick question about your property at {{property_address}}" />
+      </div>
+      <div class="frow">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+          <label style="margin-bottom:0">Subject B <span style="font-size:11px;color:#888;font-weight:400">(A/B test — alternates with Subject A)</span></label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;font-weight:400">
+            <input type="checkbox" id="abTestEnabled" onchange="syncABToggle(this)"> Enable A/B test
+          </label>
+        </div>
+        <input type="text" id="subjB" value="{{first_name}} — quick question" placeholder="Enter Subject B for A/B testing" />
+      </div>
+      <div class="frow">
+        <label>Email body</label>
+        <textarea id="body" rows="12">Hi {{first_name}},
+
+{{ai_opener}}
+
+I am a local real estate investor and I buy houses in {{property_city}} in as-is condition. No repairs needed, no agent fees, and we can close on your timeline.
+
+If you have ever thought about selling, I would love to have a quick conversation. No pressure at all.
+
+Would you be open to a brief call this week?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.</textarea>
+      </div>
+      <div>
+        <div class="slabel" style="margin-bottom:6px">Insert tag</div>
+        <div id="tagBtns"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="slabel">Live preview &mdash; first contact</div>
+      <div class="pbox" id="prevBox">Upload contacts to see a preview.</div>
+    </div>
+  </div>
+
+  <!-- AI LINES -->
+  <div id="tab-ai" style="display:none">
+    <div class="ai-panel">
+      <div class="slabel" style="color:#7c3aed">✦ AI personalization engine</div>
+      <p style="font-size:13px;color:#5b21b6;margin-top:6px;line-height:1.6">Claude writes a unique opening sentence for each seller based on their address. Click any opener to edit it before sending.</p>
+    </div>
+    <div class="card">
+      <div class="frow">
+        <label>Your context (tells Claude who you are)</label>
+        <textarea id="aiCtx" rows="3">I'm a local real estate investor in Arizona who buys houses directly from owners. Keep the tone warm, genuine, and conversational — not salesy.</textarea>
+      </div>
+      <div class="frow">
+        <label>Opener style</label>
+        <select id="opStyle">
+          <option value="curious">Curious / friendly — reference the address naturally</option>
+          <option value="direct">Direct / no-fluff — straight to the point</option>
+          <option value="neighbor">Neighborhood-focused — mention the local area</option>
+          <option value="compliment">Light compliment — something genuine about the property</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn-ai" onclick="generateAll()" id="genBtn">✦ Generate openers for all contacts</button>
+        <button class="btn-s" onclick="clearOpeners()">&#x21BA; Clear &amp; regenerate</button>
+        <span id="genStatus" style="font-size:13px;color:#888"></span>
+      </div>
+      <div class="prog-bar" id="genBar" style="display:none"><div class="prog-fill" id="genFill" style="width:0%"></div></div>
+    </div>
+    <div id="openerList" style="display:none">
+      <div class="slabel" style="margin-bottom:10px">Generated openers &mdash; click to edit</div>
+      <div id="openerCards"></div>
+    </div>
+    <div id="noAi" style="text-align:center;padding:2rem;color:#aaa;font-size:14px">Upload contacts first, then generate openers here.</div>
+  </div>
+
+  <!-- GMAIL SETUP -->
+  <div id="tab-sender" style="display:none">
+    <div class="server-check-box" id="serverCheckBox">
+      <div>
+        <strong style="font-size:14px" id="serverCheckTitle">Checking relay server...</strong>
+        <p style="font-size:12px;color:#666;margin-top:3px" id="serverCheckSub">Needs a one-time local relay. Download server.js below and run it once.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-s" onclick="checkServer()">Recheck</button>
+        <button class="btn-s" onclick="downloadServerJS()" style="background:#1a1a1a;color:#fff;border-color:#1a1a1a">&#x2B07; Download server.js</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="slabel">Your info</div>
+      <div class="frow"><label>Your name</label><input type="text" id="sName" placeholder="Ryan Freeman Watson" /></div>
+      <div class="frow"><label>Your phone (appears in emails)</label><input type="text" id="sPhone" placeholder="(602) 555-0100" /></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div class="slabel" style="margin-bottom:0">Gmail accounts <span style="font-size:11px;color:#888;font-weight:400;text-transform:none;letter-spacing:0">(round-robin rotation)</span></div>
+        <button class="btn-ai" style="padding:6px 14px;font-size:12px" onclick="addGmailAccount()">+ Add account</button>
+      </div>
+      <div id="gmailAccountsList"></div>
+      <div class="note" style="margin-top:12px">
+        <strong>How to get an App Password (2 min):</strong><br>
+        1. Go to myaccount.google.com &rarr; Security<br>
+        2. Enable 2-Step Verification if not on<br>
+        3. Search "App passwords" &rarr; Name it "Blaster" &rarr; Create<br>
+        4. Copy the 16-character password &rarr; paste above
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn-s" onclick="testSend()">📧 Send test email</button>
+        <button class="btn-s" onclick="pingAccount()" style="background:#1a1a1a;color:#fff;border-color:#1a1a1a">⚡ Ping — is account ready?</button>
+        <select id="testAccountSelect" style="border:1px solid #e5e5e2;border-radius:6px;padding:6px 10px;font-size:13px;font-family:inherit;background:#fff">
+          <option value="">Loading accounts...</option>
+        </select>
+        <span id="testStatus" style="font-size:13px;color:#888"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">Rotation status</div>
+      <div id="rotationStatus" style="font-size:13px;color:#888;padding:4px 0">Add your Gmail accounts above to see rotation status.</div>
+    </div>
+  </div>
+
+  <!-- THROTTLE -->
+  <div id="tab-throttle" style="display:none">
+    <div class="throttle-panel">
+      <div class="slabel">Daily sending meter</div>
+      <div class="meter-nums">
+        <div>
+          <span class="meter-big" id="mBig" style="color:#1a1a1a">0</span>
+          <span class="meter-cap"> / <span id="mCap">500</span> today</span>
+        </div>
+        <div class="meter-right">
+          <div id="mPct">0% used</div>
+          <div id="mRemain">500 remaining</div>
+        </div>
+      </div>
+      <div class="meter-bar">
+        <div class="meter-fill" id="mFill" style="width:0%;background:#22c55e"></div>
+      </div>
+      <div class="tier-marks">
+        <span>0</span>
+        <span id="warnMark">75%</span>
+        <span id="stopMark">95%</span>
+        <span>100%</span>
+      </div>
+      <div id="limitNote" class="note-green" style="margin-top:12px">&#x2705; Well within limits &mdash; sending is unrestricted.</div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">Throttle settings</div>
+      <div class="tgrid">
+        <div class="topt">
+          <label>Daily send cap</label>
+          <select id="dailyCap" onchange="saveThrottle()">
+            <option value="50">50 / day &mdash; brand new, warming up</option>
+            <option value="100">100 / day &mdash; cautious ramp</option>
+            <option value="200">200 / day &mdash; moderate</option>
+            <option value="300">300 / day &mdash; established account</option>
+            <option value="500" selected>500 / day &mdash; free Gmail max</option>
+            <option value="2000">2,000 / day &mdash; Google Workspace</option>
+            <option value="custom">Custom...</option>
+          </select>
+          <div id="customCapRow" style="display:none;margin-top:8px">
+            <input type="number" id="customCap" placeholder="Enter custom limit" min="1" max="9999" onchange="saveThrottle()" />
+          </div>
+        </div>
+        <div class="topt">
+          <label>Delay between emails</label>
+          <select id="sendDelay" onchange="saveThrottle()">
+            <option value="1000">1 sec &mdash; fastest</option>
+            <option value="2000">2 sec</option>
+            <option value="3000" selected>3 sec &mdash; recommended</option>
+            <option value="5000">5 sec &mdash; cautious</option>
+            <option value="10000">10 sec &mdash; very safe</option>
+            <option value="30000">30 sec &mdash; ultra safe</option>
+          </select>
+        </div>
+        <div class="topt">
+          <label>Warn me at</label>
+          <select id="warnAt" onchange="saveThrottle()">
+            <option value="50">50% of cap &mdash; early heads-up</option>
+            <option value="75" selected>75% &mdash; default</option>
+            <option value="80">80%</option>
+            <option value="90">90% &mdash; late warning</option>
+          </select>
+        </div>
+        <div class="topt">
+          <label>Auto-pause at</label>
+          <select id="stopAt" onchange="saveThrottle()">
+            <option value="90">90% &mdash; leave a buffer</option>
+            <option value="95" selected>95% &mdash; tight buffer</option>
+            <option value="100">100% &mdash; use full cap</option>
+          </select>
+        </div>
+      </div>
+      <div class="note" style="margin-top:16px">
+        <strong>Ramp-up strategy:</strong> Start at 50/day for the first week, then step up 100 &rarr; 200 &rarr; 300 &rarr; 500. This builds sender reputation and keeps you out of spam.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">Session</div>
+      <div id="sessionSummary" style="font-size:14px;color:#888;padding:4px 0 10px">No emails sent yet today.</div>
+      <button class="btn-s" onclick="resetDailyCount()">&#x21BA; Reset daily counter (new day)</button>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div id="tab-filters" style="display:none">
+
+    <div class="card">
+      <div class="slabel">Filter summary</div>
+      <div id="filterSummary" style="padding:4px 0">
+        <span style="font-size:13px;color:#aaa">Upload a contact list to see filter results.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">&#x1F4E7; Duplicate emails</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">If the same email appears on multiple contacts, only the first one is sent to. Duplicates are automatically skipped.</p>
+      <div style="display:flex;align-items:center;gap:10px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="filterDupes" checked onchange="applyFilters()" />
+          <span>Remove duplicate emails</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">&#x274C; Invalid email format</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Removes emails that are clearly invalid (missing @, no domain, etc.)</p>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+        <input type="checkbox" id="filterInvalid" checked onchange="applyFilters()" />
+        <span>Remove invalid email formats</span>
+      </label>
+    </div>
+
+    <div class="card">
+      <div class="slabel">&#x1F6AB; Blocked domains</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Skip emails from these domains. Add one per line.</p>
+      <textarea class="unsub-list" id="blockedDomains" placeholder="noemail.com&#10;donotcontact.com&#10;spam.com" onchange="applyFilters();saveFilterSettings()"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="slabel">&#x1F6AB; Previously sent (do not re-email)</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Emails you have already blasted. Pulled automatically from your send log — or paste in manually. One per line.</p>
+      <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <button class="btn-s" style="font-size:12px" onclick="importSentLog()">&#x2B07; Import from send log</button>
+        <button class="btn-s" style="font-size:12px" onclick="clearSentList()">&#x21BA; Clear list</button>
+        <span id="sentListCount" style="font-size:12px;color:#888;align-self:center"></span>
+      </div>
+      <textarea class="unsub-list" id="sentEmails" placeholder="john@email.com&#10;jane@email.com" rows="5" onchange="applyFilters();saveSentList()"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="slabel">&#x1F6AB; Unsubscribes / opt-outs</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Anyone who replied asking to be removed. Add their email here and they will never be emailed again.</p>
+      <div style="display:flex;gap:10px;margin-bottom:10px">
+        <button class="btn-s" style="font-size:12px" onclick="clearUnsubList()">&#x21BA; Clear</button>
+        <span id="unsubCount" style="font-size:12px;color:#888;align-self:center"></span>
+      </div>
+      <textarea class="unsub-list" id="unsubEmails" placeholder="unsubscribe@example.com" rows="4" onchange="applyFilters();saveUnsubList()"></textarea>
+    </div>
+
+    <div class="card" style="border:2px solid #c4b5fd;background:#faf5ff">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div class="slabel" style="color:#7c3aed;margin-bottom:4px">🧹 Free Email Scrubber</div>
+          <p style="font-size:13px;color:#5b21b6;line-height:1.5">Removes junk emails before you blast — catches role-based addresses, disposable domains, and more. Runs locally, 100% free.</p>
+        </div>
+        <button class="btn-ai" onclick="runFreeScrubber()" style="flex-shrink:0">🧹 Scrub list now</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <label style="display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid #e5e5e2;border-radius:8px;padding:12px 14px;cursor:pointer">
+          <input type="checkbox" id="scrubRoleBased" checked style="margin-top:2px;flex-shrink:0" />
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#1a1a1a">Role-based addresses</div>
+            <div style="font-size:12px;color:#888;margin-top:3px">Removes info@, admin@, support@, noreply@, sales@, contact@, billing@, office@, team@ and 15 more</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid #e5e5e2;border-radius:8px;padding:12px 14px;cursor:pointer">
+          <input type="checkbox" id="scrubDisposable" checked style="margin-top:2px;flex-shrink:0" />
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#1a1a1a">Disposable / temp emails</div>
+            <div style="font-size:12px;color:#888;margin-top:3px">Removes mailinator, guerrillamail, tempmail, yopmail, trashmail and 100+ known throwaway domains</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid #e5e5e2;border-radius:8px;padding:12px 14px;cursor:pointer">
+          <input type="checkbox" id="scrubInternational" style="margin-top:2px;flex-shrink:0" />
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#1a1a1a">International domains</div>
+            <div style="font-size:12px;color:#888;margin-top:3px">Flags qq.com, yandex.ru, mail.ru, 163.com, sina.com — unlikely to be US property owners</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid #e5e5e2;border-radius:8px;padding:12px 14px;cursor:pointer">
+          <input type="checkbox" id="scrubShortDomain" style="margin-top:2px;flex-shrink:0" />
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#1a1a1a">Suspiciously short domains</div>
+            <div style="font-size:12px;color:#888;margin-top:3px">Removes domains under 4 characters — usually fake or invalid entries from skip trace data</div>
+          </div>
+        </label>
+      </div>
+      <div id="scrubResult" style="font-size:13px;min-height:20px"></div>
+    </div>
+
+    <div class="card" style="border:2px solid #86efac;background:#f0fdf4">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div class="slabel" style="color:#166534;margin-bottom:4px">✅ MillionVerifier — Paid Scrubber</div>
+          <p style="font-size:13px;color:#166534;line-height:1.5">Verifies every email in real-time against MillionVerifier's API. Removes invalid, disposable, and unknown addresses before you blast.</p>
+        </div>
+        <button class="btn-p" onclick="runMillionVerifier()" id="mvBtn" style="background:#166534;flex-shrink:0">✅ Verify with MillionVerifier</button>
+        <button class="btn-s" onclick="reapplyMVCache()" style="flex-shrink:0;color:#166534;border-color:#86efac">↺ Re-apply from cache (0 credits)</button>
+      </div>
+      <div class="frow">
+        <label>API Key</label>
+        <input type="text" id="mvApiKey" value="O6fwg8eIDLrqjwra2iv8pojvy" placeholder="Your MillionVerifier API key" style="font-family:monospace;font-size:13px" oninput="localStorage.setItem('blaster_mv_key',this.value)" />
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;background:#fff;border:1px solid #86efac;border-radius:6px;padding:8px 10px">
+          <input type="checkbox" id="mvKeepOk" checked /> <span><strong>ok</strong> ✅ keep</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;background:#fff;border:1px solid #e5e5e2;border-radius:6px;padding:8px 10px">
+          <input type="checkbox" id="mvKeepCatchAll" checked /> <span><strong>catch_all</strong> ✅ keep</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;background:#fff;border:1px solid #e5e5e2;border-radius:6px;padding:8px 10px">
+          <input type="checkbox" id="mvKeepUnknown" /> <span><strong>unknown</strong> ❓ skip</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;background:#fff;border:1px solid #fca5a5;border-radius:6px;padding:8px 10px">
+          <input type="checkbox" id="mvKeepInvalid" /> <span><strong>invalid</strong> ❌ skip</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;background:#fff;border:1px solid #fca5a5;border-radius:6px;padding:8px 10px">
+          <input type="checkbox" id="mvKeepDisposable" /> <span><strong>disposable</strong> ❌ skip</span>
+        </label>
+      </div>
+      <div class="prog-bar" id="mvBar" style="display:none"><div class="prog-fill" id="mvFill" style="width:0%;background:#16a34a"></div></div>
+      <div id="mvStatus" style="font-size:13px;color:#166534;margin-top:8px;min-height:18px"></div>
+      <div id="mvResult" style="font-size:13px;margin-top:8px;min-height:18px"></div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid #86efac;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div id="mvCacheStats" style="font-size:12px;color:#166534">No emails verified yet.</div>
+        <button class="btn-s" onclick="clearMVCache()" style="font-size:11px;padding:4px 10px;color:#991b1b;border-color:#fca5a5">🗑 Clear cache</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-p" onclick="applyFilters()">&#x2705; Apply all filters</button>
+        <button class="btn-ai" onclick="runFreeScrubber();applyFilters()">🧹 Scrub + Apply</button>
+        <button class="btn-s" onclick="showTab('send')">&#x1F680; Go to Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOLLOW-UPS -->
+  <div id="tab-followup" style="display:none">
+
+    <div id="followupReadyBanner" style="display:none;background:#15803d;color:#fff;border-radius:10px;padding:14px 18px;margin-bottom:16px">
+      <strong style="font-size:14px;display:block" id="followupReadyTitle">Follow-ups ready to send</strong>
+      <p style="font-size:12px;opacity:.85;margin-top:3px" id="followupReadyMsg"></p>
+    </div>
+
+    <div class="srow" id="followupStats"></div>
+
+    <div class="card">
+      <div class="slabel">Sequence status</div>
+      <div id="sequenceList" style="font-size:13px;color:#aaa;padding:4px 0">No sequences running yet. Send your first blast to start tracking.</div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">Follow-up timing</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:8px">
+        <div class="topt">
+          <label>Follow-up 1 (days after initial)</label>
+          <select id="fu1Days" onchange="saveFollowupSettings()">
+            <option value="3">3 days</option>
+            <option value="5">5 days</option>
+            <option value="7" selected>7 days</option>
+            <option value="10">10 days</option>
+            <option value="14">14 days</option>
+          </select>
+        </div>
+        <div class="topt">
+          <label>Follow-up 2 (days after FU1)</label>
+          <select id="fu2Days" onchange="saveFollowupSettings()">
+            <option value="5">5 days</option>
+            <option value="7" selected>7 days</option>
+            <option value="10">10 days</option>
+            <option value="14">14 days</option>
+          </select>
+        </div>
+        <div class="topt">
+          <label>Stop sequence after</label>
+          <select id="fuStopAfter" onchange="saveFollowupSettings()">
+            <option value="2" selected>2 follow-ups (3 total)</option>
+            <option value="1">1 follow-up (2 total)</option>
+            <option value="3">3 follow-ups (4 total)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">Follow-up 1 template</div>
+      <div class="frow" style="margin-top:8px">
+        <label>Subject</label>
+        <input type="text" id="fu1Subj" value="Re: Your property at {{property_address}}" />
+      </div>
+      <div class="frow">
+        <label>Body</label>
+        <textarea id="fu1Body" rows="8">Hi {{first_name}},
+
+I just wanted to make sure my last email didn't get buried in your inbox.
+
+I'm still very interested in your property at {{property_address}} and would love to have a quick conversation about making you a cash offer.
+
+No pressure at all — just want to make sure you had a chance to see my message.
+
+Would you be open to a quick call this week?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+Reply to be removed from future messages.</textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="slabel">Follow-up 2 template (final touch)</div>
+      <div class="frow" style="margin-top:8px">
+        <label>Subject</label>
+        <input type="text" id="fu2Subj" value="Last note about {{property_address}}" />
+      </div>
+      <div class="frow">
+        <label>Body</label>
+        <textarea id="fu2Body" rows="8">Hi {{first_name}},
+
+I'll keep this short — this is my last follow-up about your property at {{property_address}}.
+
+If you ever decide you'd like a no-obligation cash offer, I'm just a call or reply away. I buy houses in {{city}} as-is, fast, and with zero hassle.
+
+Wishing you all the best either way.
+
+{{sender_name}}
+{{sender_phone}}
+
+---
+Reply to be removed from future messages.</textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn-p" onclick="sendFollowups()" id="sendFollowupBtn">🔁 Send ready follow-ups now</button>
+        <button class="btn-s" onclick="checkFollowupsDue()">🔍 Check who is due</button>
+        <button class="btn-s" onclick="exportSequence()">⬇ Export sequence log</button>
+        <button class="btn-s" style="color:#991b1b;border-color:#fca5a5" onclick="clearAllSequences()">🗑 Clear all sequences</button>
+      </div>
+      <div id="fuSendMsg" style="font-size:13px;color:#888;margin-top:10px"></div>
+      <div class="prog-bar" id="fuBar" style="display:none"><div class="prog-fill" id="fuFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="card" id="fuLogCard" style="display:none">
+      <div class="slabel">Follow-up send log</div>
+      <div style="overflow-x:auto">
+        <table class="ctable">
+          <thead><tr><th>Contact</th><th>Address</th><th>Email</th><th>Touch</th><th>Status</th><th>Sent</th></tr></thead>
+          <tbody id="fuLogBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SEND -->
+  <div id="tab-send" style="display:none">
+    <div id="suspendedBanner" style="display:none;background:#dc2626;color:#fff;border-radius:10px;padding:16px 18px;margin-bottom:16px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="flex:1">
+          <strong style="font-size:14px;display:block">🚫 Account Daily Limit Reached</strong>
+          <div id="suspendedMsg" style="font-size:13px;opacity:.9;margin-top:6px;line-height:1.7"></div>
+        </div>
+        <button onclick="dismissSuspendedBanner()" style="background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.6);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0">✕ Dismiss</button>
+      </div>
+    </div>
+
+    <div class="paused-banner" id="pausedBanner" >
+      <div>
+        <strong>&#x23F8; Sending paused &mdash; daily limit reached</strong>
+        <p id="pausedMsg">You have hit your daily cap. Resume tomorrow or raise your limit in the Throttle tab.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <button class="btn-outline-white" onclick="showTab('throttle')">Adjust limit</button>
+        <button class="btn-outline-white" onclick="forceResume()" style="background:rgba(255,255,255,.2)">Force resume</button>
+      </div>
+    </div>
+
+    <div class="srow5" id="sendStats"></div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="slabel" style="margin-bottom:0">Launch blast</div>
+        <div style="font-size:12px;color:#888" id="throttleHint"></div>
+      </div>
+
+      <div style="background:#faf5ff;border:1px solid #c4b5fd;border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:11px;font-weight:600;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap">Active Template</span>
+        <select id="sendTemplatePicker" onchange="loadTemplateFromSendTab(this.value)" style="flex:1;border:1px solid #c4b5fd;border-radius:6px;padding:6px 10px;font-size:13px;font-family:inherit;background:#fff;color:#1a1a1a;font-weight:600;min-width:200px"></select>
+        <button onclick="showTab('template')" style="font-size:11px;color:#7c3aed;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap">Edit →</button>
+      </div>
+
+      <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:11px;font-weight:600;color:#166534;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap">Active List</span>
+        <span style="font-size:13px;font-weight:600;color:#1a1a1a" id="activeListName">No list loaded</span>
+        <span id="activeListCount" style="font-size:11px;color:#888;margin-left:auto"></span>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:10px 14px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:11px;font-weight:600;color:#92400e;text-transform:uppercase;letter-spacing:.06em">A/B Subject Line Test</div>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;font-weight:600;color:#92400e">
+            <input type="checkbox" id="abTestEnabledSend" onchange="syncABToggle(this)"> Enable A/B test
+          </label>
+        </div>
+        <div id="abPreviewBar" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
+            <div style="background:#fff;border:1px solid #e5e5e2;border-radius:6px;padding:8px 10px">
+              <div style="font-size:10px;font-weight:600;color:#888;margin-bottom:4px">SUBJECT A</div>
+              <div style="font-size:12px;color:#1a1a1a" id="abPreviewA">—</div>
+            </div>
+            <div style="background:#ede9fe;border:1px solid #c4b5fd;border-radius:6px;padding:8px 10px">
+              <div style="font-size:10px;font-weight:600;color:#7c3aed;margin-bottom:4px">SUBJECT B</div>
+              <div style="font-size:12px;color:#4c1d95" id="abPreviewB">—</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#92400e">↔ Contacts alternate A → B → A → B automatically</div>
+        </div>
+      </div>
+
+      <div id="listHistoryPanel" style="margin-bottom:10px;display:none">
+        <div class="slabel" style="margin-bottom:8px">📂 List History</div>
+        <div id="listHistoryTable" style="overflow-x:auto"></div>
+      </div>
+
+      <div id="limitBarWrap" style="margin-bottom:14px;display:none">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px">
+          <span>Daily limit</span><span id="limitBarLabel">0 / 500</span>
+        </div>
+        <div class="meter-bar" style="height:10px">
+          <div class="meter-fill" id="limitBarFill" style="width:0%;background:#22c55e"></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;padding:12px 14px;background:#fafaf8;border:1px solid #e5e5e2;border-radius:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:13px;font-weight:600;color:#1a1a1a">Send from:</span>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+              <input type="radio" name="sendMode" value="auto" checked onchange="updateSendModeUI()" />
+              <span>Auto rotate</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+              <input type="radio" name="sendMode" value="manual" onchange="updateSendModeUI()" />
+              <span>Pick account</span>
+            </label>
+          </div>
+          <div id="manualAccountPicker" style="display:none">
+            <select id="manualAccountSelect" style="border:1px solid #e5e5e2;border-radius:6px;padding:6px 10px;font-size:13px;font-family:inherit;background:#fff">
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="sendMsg" style="font-size:14px;color:#666;margin-bottom:10px">Configure sender info in Gmail Setup, then click Send.</div>
+      <div class="prog-bar" id="sendBar" style="display:none"><div class="prog-fill" id="sendFill" style="width:0%"></div></div>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-p" onclick="startSend(false)" id="sendBtn">&#x1F680; Send to selected contacts</button>
+        <button class="btn-s" onclick="pauseSend()" id="pauseBtn" style="display:none">&#x23F8; Pause</button>
+        <button class="btn-s" onclick="previewFirst()">&#x1F441; Preview first email</button>
+        <button class="btn-s" onclick="exportLog()">&#x2B07; Export log CSV</button>
+      </div>
+      <div id="liveCounter" style="display:none;margin-top:12px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:600;color:#166534">
+        <span id="liveCountSent">0</span> sent &nbsp;|&nbsp; <span id="liveCountErr" style="color:#dc2626">0</span> errors &nbsp;|&nbsp; <span id="liveCountRemain" style="color:#888">0</span> remaining
+      </div>
+
+
+      <div style="margin-top:14px;background:#fafaf8;border:1px solid #e5e5e2;border-radius:8px;padding:14px 16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px">⏰ Schedule blast</div>
+            <div style="font-size:12px;color:#888">Set a time and the blaster fires automatically — even if you close this tab (as long as the server is running)</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <input type="time" id="scheduleTime" value="00:00" style="border:1px solid #e5e5e2;border-radius:6px;padding:7px 10px;font-size:14px;font-family:inherit;background:#fff" />
+            <button class="btn-s" onclick="scheduleBlast()" id="scheduleBtn" style="font-weight:600">⏰ Schedule</button>
+            <button class="btn-s" onclick="cancelSchedule()" id="cancelScheduleBtn" style="display:none;color:#991b1b;border-color:#fca5a5">✕ Cancel</button>
+          </div>
+        </div>
+        <div id="scheduleStatus" style="font-size:13px;margin-top:10px;display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:8px 12px;color:#166534"></div>
+      </div>
+    </div>
+
+    <div class="card" id="logCard" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="slabel" style="margin-bottom:0">Send log</div>
+        <button class="btn-s" onclick="exportLog()" style="font-size:11px;padding:4px 10px">⬇ Export CSV</button>
+      </div>
+      <div style="overflow-x:auto;max-height:300px;overflow-y:auto">
+        <table class="ctable">
+          <thead><tr><th>Contact</th><th>Address</th><th>Email</th><th>Sent From</th><th>A/B</th><th>Status</th><th>Note</th></tr></thead>
+          <tbody id="logBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPLIES -->
+  <div id="tab-replies" style="display:none">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div class="slabel" style="margin-bottom:4px">&#x1F4E8; Replies from sellers</div>
+          <p style="font-size:13px;color:#666">Scans all your Gmail accounts for replies from people on your lists. Checks the last 7 days by default.</p>
+        </div>
+        <button class="btn-p" onclick="checkReplies()" id="checkRepliesBtn">&#x1F4E8; Check replies now</button>
+      </div>
+      <div class="prog-bar" id="repliesBar" style="display:none"><div class="prog-fill" id="repliesFill" style="width:0%;background:#7c3aed"></div></div>
+      <div id="repliesStatus" style="font-size:13px;color:#666;margin-bottom:10px"></div>
+      <div id="repliesResult" style="font-size:13px;margin-bottom:12px"></div>
+      <div id="repliesList"></div>
+    </div>
+  </div>
+
+  <!-- CODE VIEW -->
+  <div id="tab-code" style="display:none">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="slabel" style="margin-bottom:0">Full source code</div>
+        <button class="btn-s" style="font-size:12px" onclick="copyCode()">📋 Copy all</button>
+      </div>
+      <textarea id="codeBox" style="width:100%;background:#1a1a1a;color:#e5e5e2;border:none;border-radius:10px;padding:16px;font-family:monospace;font-size:11px;line-height:1.6;min-height:500px;resize:vertical" readonly></textarea>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SERVER='http://localhost:3456';
+let contacts=[],selectedIds=new Set(),sendLog=[],sending=false,pauseRequested=false,generating=false;
+let warnedAt75=false,warnedAt90=false;
+
+/* ── THROTTLE PERSISTENCE ── */
+function todayKey(){return 'blaster_'+new Date().toISOString().slice(0,10);}
+function getDailySent(){return parseInt(localStorage.getItem(todayKey())||'0');}
+function addSent(n){localStorage.setItem(todayKey(),getDailySent()+n);}
+function resetDailyCount(){
+  localStorage.setItem(todayKey(),'0');
+  const _accts=getGmailAccounts();
+  const _today=new Date().toISOString().slice(0,10);
+  _accts.forEach(a=>{
+    localStorage.setItem('blaster_acct_'+_today+'_'+a.email,'0');
+    a.sentToday=0;
+  });
+  saveGmailAccounts(_accts);
+  updateLimitUI();
+  updateRotationStatus();
+  populateManualPicker();
+  toast('Daily counter reset to 0','info',3000);
+}
+
+function getCap(){
+  const s=document.getElementById('dailyCap');
+  if(!s)return 500;
+  if(s.value==='custom'){const v=parseInt(document.getElementById('customCap')?.value);return isNaN(v)?500:v;}
+  return parseInt(s.value)||500;
+}
+function getDelay(){return parseInt(document.getElementById('sendDelay')?.value||'3000');}
+function getWarnPct(){return parseInt(document.getElementById('warnAt')?.value||'75')/100;}
+function getStopPct(){return parseInt(document.getElementById('stopAt')?.value||'95')/100;}
+
+function saveThrottle(){
+  const csel=document.getElementById('dailyCap');
+  const crow=document.getElementById('customCapRow');
+  if(csel&&crow)crow.style.display=csel.value==='custom'?'block':'none';
+  updateLimitUI();
+}
+
+function limitColor(pct,stopPct,warnPct){
+  if(pct>=stopPct)return'#ef4444';
+  if(pct>=0.9)return'#f97316';
+  if(pct>=warnPct)return'#f59e0b';
+  return'#22c55e';
+}
+
+function updateLimitUI(){
+  const activeAccts=getGmailAccounts?getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass).length||1:1;
+  const sent=getDailySent(),cap=getCap()*activeAccts,warnPct=getWarnPct(),stopPct=getStopPct();
+  const pct=cap>0?Math.min(1,sent/cap):0,remain=Math.max(0,cap-sent);
+  const col=limitColor(pct,stopPct,warnPct);
+
+  // Throttle tab big meter
+  const mf=document.getElementById('mFill');if(mf){mf.style.width=(pct*100)+'%';mf.style.background=col;}
+  const mb=document.getElementById('mBig');if(mb){mb.textContent=sent;mb.style.color=pct>=stopPct?'#dc2626':pct>=warnPct?'#d97706':'#1a1a1a';}
+  el('mCap',cap);el('mPct',Math.round(pct*100)+'% used');el('mRemain',remain+' remaining');
+  const wm=document.getElementById('warnMark');if(wm)wm.textContent=Math.round(getWarnPct()*100)+'%';
+  const sm=document.getElementById('stopMark');if(sm)sm.textContent=Math.round(getStopPct()*100)+'%';
+  const ln=document.getElementById('limitNote');
+  if(ln){
+    if(pct>=stopPct){ln.className='note-danger';ln.innerHTML='&#x1F6D1; Daily limit reached &mdash; sending is paused. Reset counter or increase limit.';}
+    else if(pct>=0.9){ln.className='note-danger';ln.innerHTML='&#x1F534; Critical &mdash; only '+remain+' emails left today!';}
+    else if(pct>=warnPct){ln.className='note-warn';ln.innerHTML='&#x26A0;&#xFE0F; Approaching limit &mdash; '+remain+' emails remaining today.';}
+    else{ln.className='note-green';ln.innerHTML='&#x2705; Well within limits &mdash; '+remain+' emails remaining today.';}
+  }
+  el('sessionSummary',sent>0?sent+' emails sent today ('+Math.round(pct*100)+'% of '+cap+' cap).':'No emails sent yet today.');
+
+  // Topbar pill
+  const pf=document.getElementById('pillFill');if(pf){pf.style.width=(pct*100)+'%';pf.style.background=col;}
+  el('pillText','Daily: '+sent+' / '+cap);
+  el('pillRemain',remain+' left');
+  el('pillIcon',pct>=stopPct?'&#x1F6D1;':pct>=0.9?'&#x1F534;':pct>=warnPct?'&#x26A0;':'&#x1F4CA;');
+
+  // Send tab inline bar
+  const lf=document.getElementById('limitBarFill');if(lf){lf.style.width=(pct*100)+'%';lf.style.background=col;}
+  el('limitBarLabel',sent+' / '+cap);
+  el('throttleHint',remain+' remaining today &bull; '+getDelay()/1000+'s delay');
+
+  // Paused banner
+  const pb=document.getElementById('pausedBanner');
+  if(pb){pb.style.display=pct>=stopPct?'flex':'none';el('pausedMsg','You have sent '+sent+' of '+cap+' today ('+Math.round(pct*100)+'%). Adjust your limit in Throttle or wait until tomorrow.');}
+}
+function el(id,val){const e=document.getElementById(id);if(e)e.innerHTML=val;}
+
+/* ── TOASTS ── */
+let tc=0;
+function toast(msg,type='info',ms=5000){
+  const id='t'+(tc++);
+  const d=document.createElement('div');
+  d.className='toast '+type;d.id=id;d.innerHTML=msg;
+  document.getElementById('toasts').appendChild(d);
+  setTimeout(()=>{d.classList.add('fade');setTimeout(()=>d.remove(),420);},ms);
+}
+
+/* ── LIMIT ALERTS DURING SEND ── */
+function checkAlerts(){
+  const activeAccts=getGmailAccounts?getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass).length||1:1;
+  const sent=getDailySent(),cap=getCap()*activeAccts,pct=sent/cap,stopPct=getStopPct(),warnPct=getWarnPct(),remain=Math.max(0,cap-sent);
+  if(pct>=stopPct){toast('&#x1F6D1; Daily limit hit! '+sent+'/'+cap+' sent. Pausing automatically.','danger',9000);return false;}
+  if(pct>=0.9&&!warnedAt90){warnedAt90=true;toast('&#x1F534; Critical: only '+remain+' emails left today ('+Math.round(pct*100)+'% used)','danger',7000);}
+  else if(pct>=warnPct&&!warnedAt75){warnedAt75=true;toast('&#x26A0;&#xFE0F; Approaching daily limit &mdash; '+remain+' emails remaining today','warn',6000);}
+  return true;
+}
+
+
+/* ── SMTP SEND (via local relay server) ── */
+async function sendEmailDirect({user, pass, from, to, subject, text, replyTo}){
+  const res = await fetch(SERVER+'/api/send-email', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({smtp:{host:'smtp.gmail.com',port:'587',user,pass}, from, to, subject, text, replyTo: replyTo||from})
+  });
+  return res.json();
+}
+
+/* ── SERVER ── */
+async function checkServer(){
+  const btn=document.querySelector('[onclick="checkServer()"]');
+  const accounts=getGmailAccounts?getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass):[];
+  const ready=accounts.length>0;
+  setServer(ready);
+  if(btn){btn.innerHTML='&#x21BA; Check';btn.style.opacity='1';}
+  toast(ready?'&#x2705; '+accounts.length+' Gmail account'+(accounts.length>1?'s':'')+' ready — server connected!':'&#x26A0; Add your Gmail accounts in Gmail Setup first',ready?'success':'warn',4000);
+}
+function setServer(online){
+  document.getElementById('serverDot').className='dot '+(online?'online':'offline');
+  el('serverLabel',online?'Gmail ready':'Credentials needed');
+  const box=document.getElementById('serverCheckBox');
+  if(box){box.className='server-check-box'+(online?'':' offline');
+    el('serverCheckTitle',online?'&#x2705; Ready to send — SmtpJS connected':'&#x26A0; Enter your Gmail credentials below');
+    el('serverCheckSub',online?'Sending directly via Gmail SMTP &mdash; no local server needed.':'Download server.js, run: npm install express nodemailer cors &amp;&amp; node server.js');}
+}
+
+/* ── TABS ── */
+function showTab(n){
+  ['contacts','template','ai','sender','throttle','filters','followup','send','replies','code'].forEach(function(t){
+    var el=document.getElementById('tab-'+t);
+    if(el) el.style.display=(t===n?'block':'none');
+  });
+  document.querySelectorAll('.tab').forEach(function(e){
+    e.classList.toggle('active',e.getAttribute('onclick')==="showTab('"+n+"')");
+  });
+  if(n==='template')updatePreview();
+  if(n==='send'){updateSendStats();renderListHistory();loadSendLog();
+  // Show A/B preview if enabled
+  const _abEnabled=document.getElementById('abTestEnabled')?.checked;
+  const _abSendCb=document.getElementById('abTestEnabledSend');
+  if(_abSendCb)_abSendCb.checked=!!_abEnabled;
+  const _abBar=document.getElementById('abPreviewBar');
+  if(_abBar){
+    if(_abEnabled){
+      const _subjA=document.getElementById('subj')?.value||'';
+      const _subjB=document.getElementById('subjB')?.value||'';
+      const _pa=document.getElementById('abPreviewA');
+      const _pb=document.getElementById('abPreviewB');
+      if(_pa)_pa.textContent=_subjA||'—';
+      if(_pb)_pb.textContent=_subjB||'—';
+      _abBar.style.display='block';
+    } else {
+      _abBar.style.display='none';
+    }
+  }
+  // Check follow-ups due and show reminder
+  const _fueDue=getFollowupsDue();
+  const _fuBanner=document.getElementById('followupReminderBanner');
+  const _fuMsg=document.getElementById('followupReminderMsg');
+  if(_fuBanner&&_fuMsg&&_fueDue.length>0){
+    const _fuGroups={};
+    _fueDue.forEach(f=>{const c=f.campaign||'Unknown';_fuGroups[c]=(_fuGroups[c]||0)+1;});
+    const _fuText=Object.entries(_fuGroups).map(([c,n])=>n+' from "'+c+'"').join(', ');
+    _fuMsg.textContent=_fueDue.length+' contact(s) due: '+_fuText+'. No CSV upload needed — contacts are already saved.';
+    _fuBanner.style.display='flex';
+  }var lbw=document.getElementById('limitBarWrap');if(lbw)lbw.style.display='block';populateManualPicker();updateRotationStatus();populateSendTemplatePicker();
+  var aln=document.getElementById('activeListName');var alc=document.getElementById('activeListCount');
+  if(aln){var ln=localStorage.getItem('blaster_active_list')||'No list loaded';aln.textContent=ln;}
+  if(alc&&contacts.length){var withEmail=contacts.filter(c=>c._emails&&c._emails.length>0).length;alc.textContent=contacts.length+' contacts ('+withEmail+' with email)';}
+}
+  if(n==='sender'){checkServer();populateManualPicker();}
+  if(n==='code'){var cb=document.getElementById('codeBox');if(cb&&!cb.value)cb.value=document.documentElement.outerHTML;}
+  updateLimitUI();
+}
+function copyCode(){
+  var cb=document.getElementById('codeBox');
+  if(!cb)return;
+  cb.select();
+  document.execCommand('copy');
+  toast('Code copied to clipboard','success',3000);
+}
+
+/* ── CSV ── */
+function handleCSV(e){const f=e.target.files[0];if(!f)return;localStorage.setItem('blaster_active_list',f.name);const r=new FileReader();r.onload=ev=>parseCSV(ev.target.result);r.readAsText(f);}
+
+function triggerMerge(){
+  // Create a fresh file input every time so there's no stale state
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='.csv';
+  inp.style.display='none';
+  inp.onchange=function(e){
+    const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=ev=>mergeCSV(ev.target.result,f.name);
+    r.readAsText(f);
+    document.body.removeChild(inp);
+  };
+  document.body.appendChild(inp);
+  inp.click();
+}
+
+function mergeCSV(text,filename){
+  // Parse the new CSV
+  text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  const lines=text.trim().split('\n');if(lines.length<2)return;
+  const firstLine=lines[0].replace(/^\uFEFF/,'');
+  const headers=firstLine.split(',').map(normalizeHeader);
+
+  const existing=contacts.length;
+  const existingEmails=new Set();
+  contacts.forEach(c=>(c._emails||[]).forEach(e=>existingEmails.add(e.toLowerCase())));
+
+  let added=0,dupes=0;
+  // Get highest existing ID to continue from
+  const maxId=contacts.reduce((m,c)=>Math.max(m,c._id||0),0);
+
+  for(let i=1;i<lines.length;i++){
+    const vals=splitLine(lines[i]);
+    const obj={_id:maxId+i,_status:'pending',_opener:'',_emails:[],_emailIdx:0};
+    headers.forEach((h,idx)=>{obj[h]=(vals[idx]||'').trim().replace(/"/g,'');});
+    // Handle combined address
+    if(!obj.property_address&&obj.property_address_full){
+      const parts=obj.property_address_full.split(',').map(s=>s.trim());
+      obj.property_address=parts[0]||'';obj.property_city=parts[1]||'';
+      obj.property_state=parts[2]||'';obj.property_zip=parts[3]||'';
+    }
+    obj.address=obj.property_address||'';
+    obj.city=obj.property_city||'';
+    obj.state=obj.property_state||'';
+    obj.zip=obj.property_zip||'';
+    const e1=(obj.email||'').trim(),e2=(obj.email2||'').trim(),e3=(obj.email3||'').trim();
+    obj._emails=[e1,e2,e3].filter(e=>e&&e.includes('@')&&e.includes('.'));
+    obj._emailsRaw=[...obj._emails];
+    if(!obj.property_address&&!obj.first_name)continue;
+    // Remove only duplicate emails, keep contact even if some emails are dupes
+    const newEmails=obj._emails.filter(e=>!existingEmails.has(e.toLowerCase()));
+    // If contact had emails but ALL were dupes, skip the whole contact
+    if(obj._emails.length>0&&newEmails.length===0){dupes++;continue;}
+    obj._emails=newEmails;
+    obj._emailsRaw=[...obj._emails];
+    newEmails.forEach(e=>existingEmails.add(e.toLowerCase()));
+    contacts.push(obj);
+    selectedIds.add(obj._id);
+    added++;
+  }
+
+  renderContacts();updateStats();updateSendStats();
+  saveContactsToStorage();
+
+  const mergeStatus=document.getElementById('mergeStatus');
+  if(mergeStatus)mergeStatus.textContent='✅ +'+added+' added from '+filename+(dupes?' ('+dupes+' dupes skipped)':'');
+  setTimeout(()=>{if(mergeStatus)mergeStatus.textContent='';},6000);
+
+  // Update active list name
+  const currentList=localStorage.getItem('blaster_active_list')||'';
+  const newListName=currentList?currentList+' + '+filename:filename;
+  localStorage.setItem('blaster_active_list',newListName);
+  const aln=document.getElementById('activeListName');
+  if(aln)aln.textContent=newListName;
+
+  // Always keep merge button visible after any merge
+  const mb2=document.getElementById('mergeListBtn');if(mb2)mb2.style.display='inline-flex';
+  toast('✅ Merged '+added+' contacts from '+filename+(dupes?' — '+dupes+' duplicate emails skipped':''),'success',5000);
+}
+function normalizeHeader(h){
+  const map={
+    // PropStream / BatchLeads raw export
+    'firstname':'first_name',
+    'lastname':'last_name',
+    'propertyaddress':'property_address',
+    'propertycity':'property_city',
+    'propertystate':'property_state',
+    'propertypostalcode':'property_zip',
+    'recipientaddress':'mailing_address',
+    'recipientcity':'mailing_city',
+    'recipientstate':'mailing_state',
+    'recipientpostalcode':'mailing_zip',
+    'contact1email_1':'email',
+    'contact1email_2':'email2',
+    'contact1email_3':'email3',
+    'contact1phone_1':'phone',
+    'contact1phone_2':'phone2',
+    'contact1phone_3':'phone3',
+    'contact1name':'contact_name',
+    'contact1type':'contact_type',
+    'ownertype':'owner_type',
+    'lastsalesdate':'last_sale_date',
+    'lastsalesprice':'last_sale_price',
+    'squarefootage':'sqft',
+    'lotsizesqft':'lot_size',
+    'propertytype':'property_type',
+    'beds':'beds',
+    'baths':'baths',
+    'county':'county',
+    // xLeads format
+    'first name':'first_name',
+    'last name':'last_name',
+    'street address':'property_address',
+    'city':'property_city',
+    'state':'property_state',
+    'postalcode':'property_zip',
+    'postal code':'property_zip',
+    'zip':'property_zip',
+    'email':'email',
+    'email 1':'email',
+    'email1':'email',
+    'email 2':'email2',
+    'email2':'email2',
+    'email 3':'email3',
+    'email3':'email3',
+    'phone':'phone',
+    'phone 2':'phone2',
+    'phone 3':'phone3',
+    'market':'market',
+    // Dallas Assigns / generic format
+    'property address':'property_address_full',
+    'dnc':'dnc',
+    'email valid':'email_valid',
+    // Ryan's edited format
+    'street address':'property_address',
+    'postal code':'property_zip',
+    'lastname':'last_name',
+    'market':'market',
+  };
+  const cleaned=h.trim().replace(/"/g,'').replace(/\uFEFF/g,'').toLowerCase();
+  return map[cleaned]||cleaned;
+}
+
+function parseCSV(text){
+  text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  const lines=text.trim().split('\n');if(lines.length<2)return;
+  const firstLine=lines[0].replace(/^\uFEFF/,'');
+  const headers=firstLine.split(',').map(normalizeHeader);
+  contacts=[];
+  for(let i=1;i<lines.length;i++){
+    const vals=splitLine(lines[i]);
+    const obj={_id:i,_status:'pending',_opener:'',_emails:[],_emailIdx:0};
+    headers.forEach((h,idx)=>{obj[h]=(vals[idx]||'').trim().replace(/"/g,'');});
+    // Handle combined address field "7738 Village Trail Dr, Dallas, TX, 75254"
+    if(!obj.property_address && obj.property_address_full){
+      const parts = obj.property_address_full.split(',').map(s=>s.trim());
+      obj.property_address = parts[0]||'';
+      obj.property_city    = parts[1]||'';
+      obj.property_state   = parts[2]||'';
+      obj.property_zip     = parts[3]||'';
+    }
+    // Always use PROPERTY address — never recipient address
+    obj.address = obj.property_address || '';
+    obj.city    = obj.property_city    || '';
+    obj.state   = obj.property_state   || '';
+    obj.zip     = obj.property_zip     || '';
+    // Collect all emails
+    var e1=(obj.email||'').trim(), e2=(obj.email2||'').trim(), e3=(obj.email3||'').trim();
+    obj._emails=[e1,e2,e3].filter(e=>e&&e.includes('@')&&e.includes('.'));
+    obj._emailsRaw=[...obj._emails];
+    if(!obj.property_address&&!obj.first_name)continue;
+    contacts.push(obj);
+  }
+  // Only select contacts that have emails by default
+  // Default: only select MV verified contacts
+  const _mvCache1=getMVCache?getMVCache():{};
+  const _keepOk1=document.getElementById('mvKeepOk')?.checked!==false;
+  const _keepCatchAll1=document.getElementById('mvKeepCatchAll')?.checked!==false;
+  const _keepUnknown1=document.getElementById('mvKeepUnknown')?.checked||false;
+  const _keepResults1=['ok','catch_all'].filter((_,i)=>[_keepOk1,_keepCatchAll1][i]);
+  if(_keepUnknown1)_keepResults1.push('unknown');
+  selectedIds=new Set(contacts.filter(c=>{
+    const emails=c._emails||[];
+    if(!emails.length)return false;
+    return emails.every(e=>{const r=_mvCache1[e.toLowerCase()];return r&&_keepResults1.includes(r.result);});
+  }).map(c=>c._id));
+  // If no MV verified contacts yet, fall back to all with emails
+  if(selectedIds.size===0)selectedIds=new Set(contacts.filter(c=>c._emails&&c._emails.length>0).map(c=>c._id));
+  const withEmail=contacts.filter(c=>c._emails.length>0).length;
+  renderContacts();renderTags(headers);
+  document.getElementById('contacts-section').style.display='block';
+  document.getElementById('no-contacts').style.display='none';
+  document.getElementById('noAi').textContent='Click "Generate openers" to create AI-personalized opening lines.';
+  updateSendStats();
+  saveContactsToStorage();
+  loadStatuses();
+  toast('Loaded '+contacts.length+' contacts &mdash; '+withEmail+' have email addresses','success',4000);
+  const _fname=localStorage.getItem('blaster_active_list')||'Unknown';
+  recordListUpload(_fname, contacts.length);
+  var aln=document.getElementById('activeListName');var alc=document.getElementById('activeListCount');
+  if(aln){var ln=localStorage.getItem('blaster_active_list')||'Unknown list';aln.textContent=ln;}
+  if(alc)alc.textContent=contacts.length+' contacts ('+withEmail+' with email)';
+  const rb=document.getElementById('resetListBtn');if(rb)rb.style.display='inline-flex';
+  const sb=document.getElementById('resetStatusBtn');if(sb)sb.style.display='inline-flex';
+  const mb=document.getElementById('mergeListBtn');if(mb)mb.style.display='inline-flex';
+  // Filters not auto-applied - use Filters tab to apply manually
+}
+function splitLine(line){
+  line=(line||'').replace(/[\r\n]+$/,'');
+  var res=[],cur='',inQ=false,ch;
+  for(var i=0;i<line.length;i++){
+    ch=line[i];
+    if(ch==='"'){ inQ=!inQ; }
+    else if(ch===','&&!inQ){ res.push(cur.trim()); cur=''; }
+    else{ cur+=ch; }
+  }
+  res.push(cur.trim());
+  return res;
+}
+function renderTags(headers){
+  const tags=[...new Set([...headers.filter(h=>!h.startsWith('_')),'ai_opener','sender_name','sender_phone'])];
+  document.getElementById('tagBtns').innerHTML=tags.map(t=>`<button class="tag-btn" onclick="insertTag('{{${t}}}')">{{${t}}}</button>`).join('');
+}
+function insertTag(tag){
+  const ta=document.getElementById('body'),s=ta.selectionStart,e2=ta.selectionEnd,v=ta.value;
+  ta.value=v.slice(0,s)+tag+v.slice(e2);ta.focus();ta.setSelectionRange(s+tag.length,s+tag.length);updatePreview();
+}
+function renderContacts(){
+  if(!contacts.length)return;
+  // Sort: contacts with emails first, no-email contacts at bottom
+  contacts.sort((a,b)=>{
+    const aHas=a._emailsRaw&&a._emailsRaw.length>0?1:0;
+    const bHas=b._emailsRaw&&b._emailsRaw.length>0?1:0;
+    return bHas-aHas;
+  });
+  const cols=[
+    {key:'first_name',label:'First Name'},
+    {key:'last_name',label:'Last Name'},
+    {key:'property_address',label:'Property Address'},
+    {key:'property_city',label:'City'},
+    {key:'property_state',label:'State'},
+    {key:'email',label:'Email 1'},
+    {key:'email2',label:'Email 2'},
+    {key:'_sentFrom',label:'Sent By'},
+  ];
+  // Only show cols that exist in data
+  const show=cols.filter(col=>contacts.some(c=>c[col.key]));
+  document.getElementById('tHead').innerHTML='<tr><th style="width:28px"><input type="checkbox" checked onchange="toggleAll(this.checked)"/></th>'+show.map(col=>'<th>'+col.label+'</th>').join('')+'<th>Emails</th><th>Scrub</th><th>AI</th><th>Status</th></tr>';
+  const mvCache=getMVCache?getMVCache():{};
+  document.getElementById('tBody').innerHTML=contacts.map(c=>{
+    // Scrub/verify badge
+    let scrubBadge='<span style="font-size:11px;color:#ccc">&mdash;</span>';
+    const emails=c._emails||[];
+    const rawEmails=c._emailsRaw||emails;
+    if(rawEmails.length>0){
+      const removedByScrub=rawEmails.length-emails.length;
+      // Check MV cache status for this contact's emails
+      const mvResults=emails.map(e=>mvCache[e.toLowerCase()]?.result).filter(Boolean);
+      const allVerified=emails.length>0&&mvResults.length===emails.length;
+      const anyInvalid=rawEmails.some(e=>mvCache[e.toLowerCase()]&&['invalid','disposable'].includes(mvCache[e.toLowerCase()].result));
+      if(allVerified){
+        const hasGood=mvResults.some(r=>['ok','catch_all'].includes(r));
+        scrubBadge=hasGood
+          ?'<span class="sbadge s-sent" style="font-size:10px">✅ verified</span>'
+          :'<span class="sbadge s-error" style="font-size:10px">❌ bad</span>';
+      } else if(mvResults.length>0){
+        scrubBadge='<span class="sbadge s-sending" style="font-size:10px">partial</span>';
+      } else if(c._scrubbed){
+        scrubBadge='<span class="sbadge s-pending" style="font-size:10px">🧹 scrubbed</span>';
+      } else {
+        scrubBadge='<span style="font-size:11px;color:#bbb">unverified</span>';
+      }
+    }
+        const sel=selectedIds.has(c._id);
+    return '<tr class="'+(sel?'sel':'')+'" id="row-'+c._id+'">'+
+      '<td><input type="checkbox" '+(sel?'checked':'')+' onchange="toggleContact('+c._id+',this.checked)"/></td>'+
+      show.map(col=>'<td title="'+(c[col.key]||'')+'">'+(c[col.key]||'')+'</td>').join('')+
+      '<td><span class="sbadge '+(c._emailsRaw&&c._emailsRaw.length?'s-sent':'s-error')+'">'+(c._emailsRaw?c._emailsRaw.length:0)+' found</span></td>'+
+      '<td>'+scrubBadge+'</td>'+
+      '<td>'+(c._opener?'<span class="sbadge s-ai">ready</span>':'<span style="font-size:11px;color:#ccc">&mdash;</span>')+'</td>'+
+      '<td><span class="sbadge s-'+c._status+'" id="st-'+c._id+'">'+c._status+'</span></td>'+
+      '</tr>';
+  }).join('');
+  updateStats();updateSelCount();updateScrubSummary();
+}
+function toggleAll(checked){
+  if(checked)contacts.forEach(c=>selectedIds.add(c._id));else selectedIds.clear();
+  document.querySelectorAll('#tBody input[type=checkbox]').forEach(cb=>cb.checked=checked);
+  contacts.forEach(c=>{const r=document.getElementById('row-'+c._id);if(r)r.classList.toggle('sel',checked);});
+  updateSelCount();
+}
+
+function selectOnlyMVVerified(){
+  const mvCache=getMVCache?getMVCache():{};
+  // Build keep list based on current MV checkbox settings
+  const keepOk=document.getElementById('mvKeepOk')?.checked!==false;
+  const keepCatchAll=document.getElementById('mvKeepCatchAll')?.checked!==false;
+  const keepUnknown=document.getElementById('mvKeepUnknown')?.checked||false;
+  const keepInvalid=document.getElementById('mvKeepInvalid')?.checked||false;
+  const keepDisposable=document.getElementById('mvKeepDisposable')?.checked||false;
+  const keepResults=[];
+  if(keepOk)keepResults.push('ok');
+  if(keepCatchAll)keepResults.push('catch_all');
+  if(keepUnknown)keepResults.push('unknown');
+  if(keepInvalid)keepResults.push('invalid');
+  if(keepDisposable)keepResults.push('disposable');
+
+  selectedIds.clear();
+  contacts.forEach(c=>{
+    const emails=c._emails||[];
+    if(!emails.length)return;
+    const allVerified=emails.every(e=>{
+      const cached=mvCache[e.toLowerCase()];
+      return cached&&keepResults.includes(cached.result);
+    });
+    if(allVerified)selectedIds.add(c._id);
+  });
+  renderContacts();
+  toast('✅ Selected '+selectedIds.size+' MV verified contacts ('+keepResults.join(', ')+')','success',3000);
+}
+
+function selectScrubbed(){
+  const mvCache=getMVCache?getMVCache():{};
+  selectedIds.clear();
+  contacts.forEach(c=>{
+    const emails=c._emails||[];
+    if(!emails.length)return;
+    // Scrubbed but NOT MV verified
+    const anyMV=emails.some(e=>mvCache[e.toLowerCase()]);
+    if(c._scrubbed&&!anyMV)selectedIds.add(c._id);
+  });
+  renderContacts();
+  toast('🧹 Selected '+selectedIds.size+' free scrubbed (non-MV) contacts','info',3000);
+}
+function toggleContact(id,checked){
+  if(checked)selectedIds.add(id);else selectedIds.delete(id);
+  const r=document.getElementById('row-'+id);if(r)r.classList.toggle('sel',checked);updateSelCount();
+}
+function updateSelCount(){el('selCount',selectedIds.size+' selected');}
+function updateScrubSummary(){
+  const bar=document.getElementById('scrubSummaryBar');
+  if(!bar||!contacts.length){if(bar)bar.style.display='none';return;}
+  const mvCache=getMVCache?getMVCache():{};
+  let scrubbed=0,mvVerified=0,mvBad=0,unverified=0;
+  contacts.forEach(c=>{
+    const emails=c._emails||[];
+    const raw=c._emailsRaw||emails;
+    if(!raw.length)return;
+    const mvResults=emails.map(e=>mvCache[e.toLowerCase()]?.result).filter(Boolean);
+    if(mvResults.length===emails.length&&emails.length>0){
+      const good=mvResults.some(r=>['ok','catch_all'].includes(r));
+      if(good)mvVerified++;else mvBad++;
+    } else if(c._scrubbed){
+      scrubbed++;
+    } else {
+      unverified++;
+    }
+  });
+  const total=contacts.filter(c=>(c._emailsRaw||c._emails||[]).length>0).length;
+  bar.style.display='block';
+  bar.innerHTML=
+    '<strong>List status:</strong> &nbsp; '+
+    (mvVerified?'<span style="color:#166534">✅ '+mvVerified+' MV verified</span> &nbsp;|&nbsp; ':'')+
+    (scrubbed?'<span style="color:#7c3aed">🧹 '+scrubbed+' free scrubbed only</span> &nbsp;|&nbsp; ':'')+
+    (mvBad?'<span style="color:#dc2626">❌ '+mvBad+' bad (removed)</span> &nbsp;|&nbsp; ':'')+
+    (unverified?'<span style="color:#d97706">⚠️ '+unverified+' not yet scrubbed</span>':'');
+}
+
+function updateStats(){
+  const sent=contacts.filter(c=>c._status==='sent').length,err=contacts.filter(c=>c._status==='error').length,ai=contacts.filter(c=>c._opener).length;
+  document.getElementById('statsRow').innerHTML=`
+    <div class="stat"><div class="num">${contacts.length}</div><div class="lbl">Total</div></div>
+    <div class="stat"><div class="num">${selectedIds.size}</div><div class="lbl">Selected</div></div>
+    <div class="stat"><div class="num" style="color:#7c3aed">${ai}</div><div class="lbl">AI openers</div></div>
+    <div class="stat"><div class="num" style="color:#166534">${sent}</div><div class="lbl">Sent</div></div>`;
+}
+
+/* ── AI OPENERS ── */
+async function generateAll(){
+  if(generating||!contacts.length)return;
+  generating=true;
+  const btn=document.getElementById('genBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Generating...';
+  document.getElementById('genBar').style.display='block';
+  const ctx=document.getElementById('aiCtx').value;
+  const styleMap={curious:'curious and friendly, referencing the property address naturally as if you just came across it',direct:'direct and no-fluff, mentioning the address matter-of-factly',neighbor:'neighborhood-focused, mentioning familiarity with the area',compliment:'a light genuine compliment or observation about the property or street'};
+  const styleDesc=styleMap[document.getElementById('opStyle').value]||styleMap.curious;
+  let done=0;
+  for(const c of contacts){
+    if(c._opener){done++;continue;}
+    try{
+      const prompt=`You are helping a real estate investor write personalized email openers. Investor context: ${ctx}\n\nWrite ONE short opening sentence (1 sentence only, no greeting) for an email to the owner of ${c.address||''}${c.city?', '+c.city:''}${c.state?', '+c.state:'Arizona'}. Style: ${styleDesc}. Do NOT start with "I". Output ONLY the sentence.`;
+      const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:100,messages:[{role:'user',content:prompt}]})});
+      const data=await res.json();
+      c._opener=((data.content&&data.content[0]&&data.content[0].text)||'').trim().replace(/^["']|["']$/g,'');
+    }catch(e){c._opener='Your property at '+c.address+' caught my attention and I wanted to reach out directly.';}
+    done++;
+    document.getElementById('genFill').style.width=Math.round(done/contacts.length*100)+'%';
+    el('genStatus',done+' / '+contacts.length);
+    renderOpenerList();updateStats();await sleep(120);
+  }
+  generating=false;btn.disabled=false;btn.innerHTML='&#x2726; Generate openers for all contacts';
+  el('genStatus','Done &mdash; '+contacts.filter(c=>c._opener).length+' ready');
+  renderContacts();updatePreview();
+  toast(contacts.filter(c=>c._opener).length+' AI openers generated','success',3000);
+}
+function clearOpeners(){contacts.forEach(c=>{c._opener='';});renderOpenerList();renderContacts();el('genStatus','');document.getElementById('genFill').style.width='0%';}
+function renderOpenerList(){
+  const listEl=document.getElementById('openerList'),cardsEl=document.getElementById('openerCards');
+  const w=contacts.filter(c=>c._opener);
+  if(!w.length){listEl.style.display='none';return;}
+  listEl.style.display='block';
+  cardsEl.innerHTML=w.map(c=>`<div class="card" style="margin-bottom:8px;padding:12px 16px">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:600;color:#888;margin-bottom:6px">${c.first_name||''} ${c.last_name||''} &middot; <span style="color:#bbb">${c.address||''}</span></div>
+        <div class="ai-opener" contenteditable="true" onblur="saveOpener(${c._id},this.textContent)">${c._opener}</div>
+      </div>
+      <button class="btn-s" style="padding:5px 10px;font-size:11px;flex-shrink:0" onclick="regenOne(${c._id})">&#x21BA; Redo</button>
+    </div>
+  </div>`).join('');
+}
+function saveOpener(id,text){const c=contacts.find(c=>c._id===id);if(c)c._opener=text.trim();}
+async function regenOne(id){
+  const c=contacts.find(c=>c._id===id);if(!c)return;
+  const ctx=document.getElementById('aiCtx').value;
+  const styleMap={curious:'curious and friendly',direct:'direct and no-fluff',neighbor:'neighborhood-focused',compliment:'light genuine compliment'};
+  const styleDesc=styleMap[document.getElementById('opStyle').value]||styleMap.curious;
+  const editable=document.querySelector('[onblur="saveOpener('+id+',this.textContent)"]');
+  if(editable)editable.textContent='Generating...';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:100,messages:[{role:'user',content:'One short opening sentence (no greeting) for the owner of '+(c.address||'')+(c.city?', '+c.city:'')+'. Style: '+styleDesc+'. Context: '+ctx+'. Do NOT start with "I". Output ONLY the sentence.'}]})});
+    const data=await res.json();
+    c._opener=((data.content&&data.content[0]&&data.content[0].text)||'').trim().replace(/^["']|["']$/g,'');
+  }catch(e){c._opener='Your property at '+c.address+' caught my attention.';}
+  if(editable)editable.textContent=c._opener;updatePreview();
+}
+
+/* ── TEMPLATE ── */
+function fillTemplate(c){
+  const _senderEmail=(getGmailAccounts&&getGmailAccounts().length?getGmailAccounts()[0].email:'');
+  const map={...c,
+    ai_opener:c._opener||'Your property caught my attention and I wanted to reach out directly.',
+    sender_name:document.getElementById('sName').value||'',
+    sender_phone:document.getElementById('sPhone').value||'',
+    sender_email:_senderEmail,
+    // Ensure property_city/state/zip fall back to city/state/zip
+    property_city:c.property_city||c.city||'',
+    property_state:c.property_state||c.state||'',
+    property_zip:c.property_zip||c.zip||'',
+    property_address:c.property_address||c.address||'',
+  };
+  let t=document.getElementById('body').value;
+  Object.keys(map).forEach(k=>{if(!k.startsWith('_'))t=t.replace(new RegExp('{{'+k+'}}','gi'),map[k]||'');});
+  return t;
+}
+function fillSubject(c, useB){
+  const normalized={...c};
+  normalized.property_city   = c.property_city   || c.city    || '';
+  normalized.property_state  = c.property_state  || c.state   || '';
+  normalized.property_address= c.property_address|| c.address || '';
+  normalized.city            = c.city    || c.property_city   || '';
+  normalized.first_name      = c.first_name || c['first name'] || '';
+  const map={...normalized,sender_name:document.getElementById('sName').value||'',sender_phone:document.getElementById('sPhone').value||''};
+  const abEnabled=document.getElementById('abTestEnabled')?.checked;
+  const subjAVal=(document.getElementById('subj')?.value||'').trim();
+  const subjBVal=(document.getElementById('subjB')?.value||'').trim();
+  let t;
+  if(abEnabled&&subjAVal&&subjBVal){
+    // A/B mode — override template subject with Subject A or B
+    t=useB?subjBVal:subjAVal;
+  } else {
+    // Normal mode — use template subject line as-is
+    t=subjAVal;
+  }
+  Object.keys(map).forEach(k=>{if(!k.startsWith('_'))t=t.replace(new RegExp('{{'+k+'}}','gi'),map[k]||'');});
+  return t;
+}
+function autoSaveActiveTemplate(){
+  const name=document.getElementById('activeTemplateName')?.textContent||'';
+  if(!name||name==='Default template'||name==='New template')return;
+  const templates=getTemplates();
+  const idx=templates.findIndex(t=>t.name===name);
+  if(idx>=0){
+    templates[idx].subj=document.getElementById('subj')?.value||'';
+    templates[idx].body=document.getElementById('body')?.value||'';
+    saveTemplates(templates);
+  }
+}
+
+function updatePreview(){
+  const box=document.getElementById('prevBox');
+  if(!contacts.length){box.textContent='Upload contacts to see a preview.';return;}
+  box.textContent='Subject: '+fillSubject(contacts[0])+'\n\n'+fillTemplate(contacts[0]);
+}
+function previewFirst(){showTab('template');updatePreview();}
+
+function updateSendStats(){
+  const sel=contacts.filter(c=>selectedIds.has(c._id)&&c._status!=='sent').length,sent=contacts.filter(c=>c._status==='sent').length,err=contacts.filter(c=>c._status==='error').length,ai=contacts.filter(c=>c._opener).length;
+  const activeAccounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass).length||1;
+  const ds=getDailySent(),cap=getCap()*activeAccounts,remain=Math.max(0,cap-ds);
+  const totalSentToday=getDailySent();
+  document.getElementById('sendStats').innerHTML=`
+    <div class="stat"><div class="num">${sel}</div><div class="lbl">To send</div></div>
+    <div class="stat"><div class="num" style="color:#7c3aed">${ai}</div><div class="lbl">AI openers</div></div>
+    <div class="stat"><div class="num" style="color:#166534">${totalSentToday}</div><div class="lbl">Sent today</div></div>
+    <div class="stat"><div class="num" style="color:#991b1b">${err}</div><div class="lbl">Errors</div></div>
+    <div class="stat"><div class="num" style="color:${remain<50?'#dc2626':remain<100?'#d97706':'#166534'}">${remain}</div><div class="lbl">Limit left</div></div>`;
+}
+
+/* ── TEST SEND ── */
+async function pingAccount(){
+  const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  if(!accounts.length){alert('Add Gmail accounts first.');return;}
+  const idx=parseInt(document.getElementById('testAccountSelect')?.value||'0');
+  const acc=accounts[idx]||accounts[0];
+  el('testStatus','⚡ Pinging '+acc.email+'...');
+  try{
+    const d=await sendEmailDirect({user:acc.email,pass:acc.pass,from:acc.email,to:acc.email,subject:'Ping test',text:'Ping'});
+    if(d.ok){
+      el('testStatus','✅ '+acc.email+' is ready to send!');
+      toast('✅ '+acc.email+' is active and ready','success',4000);
+      // Clear suspension if it was suspended
+      const suspended=JSON.parse(localStorage.getItem('blaster_suspended')||'[]');
+      const filtered=suspended.filter(s=>s.email!==acc.email);
+      localStorage.setItem('blaster_suspended',JSON.stringify(filtered));
+      renderSuspendedBanner();
+      // Clear confirmedMaxed flag
+      const allAccts=getGmailAccounts();
+      const a=allAccts.find(a=>a.email===acc.email);
+      if(a){a.confirmedMaxed=false;saveGmailAccounts(allAccts);}
+    } else if(d.error&&d.error.includes('550')){
+      el('testStatus','🚫 '+acc.email+' is still at daily limit');
+      toast('🚫 '+acc.email+' still suspended — try again later','danger',5000);
+    } else {
+      el('testStatus','⚠️ Error: '+(d.error||'Unknown'));
+    }
+  }catch(e){el('testStatus','❌ Failed: '+e.message);}
+}
+
+async function testSend(){
+  const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  if(!accounts.length){alert('Add at least one Gmail account in Gmail Setup first.');return;}
+  const idx=parseInt(document.getElementById('testAccountSelect')?.value||'0');
+  const acc=accounts[idx]||accounts[0];
+  const to=acc.email,user=acc.email,pass=acc.pass;
+  if(!to||!user||!pass){alert('Fill in your Gmail address and App Password first.');return;}
+  el('testStatus','Sending test...');
+  try{
+    el('testStatus','Sending test email...');
+    const d=await sendEmailDirect({user,pass,from:to,to,subject:'Test — Email Blaster is working!',text:"Your email blaster is connected and working. You're ready to send!"});
+    if(d.ok){el('testStatus','&#x2705; Test email sent! Check your inbox.');toast('Test email sent successfully','success',4000);}
+    else{el('testStatus','&#x274C; Error: '+(d.error||'Unknown'));toast('Test failed: '+(d.error||'Unknown'),'danger',5000);}
+  }catch(e){el('testStatus','&#x274C; Send failed: '+e.message);toast('Send error: '+e.message,'danger',5000);}
+}
+
+/* ── MAIN SEND ── */
+/* ── LIST HISTORY ── */
+function getListHistory(){
+  try{return JSON.parse(localStorage.getItem('blaster_list_history')||'[]');}catch(e){return[];}
+}
+function saveListHistory(h){localStorage.setItem('blaster_list_history',JSON.stringify(h));}
+
+function recordListUpload(filename, contactCount){
+  const history=getListHistory();
+  const existing=history.findIndex(h=>h.filename===filename);
+  const entry={
+    filename,
+    contactCount,
+    lastBlasted:new Date().toLocaleDateString(),
+    lastBlastedTs:Date.now(),
+  };
+  if(existing>=0){history[existing]=entry;}
+  else{history.unshift(entry);}
+  // Keep last 10
+  if(history.length>10)history.splice(10);
+  saveListHistory(history);
+  renderListHistory();
+}
+
+function getDaysAgo(ts){
+  return Math.floor((Date.now()-ts)/(1000*60*60*24));
+}
+
+function renderListHistory(){
+  const history=getListHistory();
+  const panel=document.getElementById('listHistoryPanel');
+  const table=document.getElementById('listHistoryTable');
+  if(!panel||!table)return;
+  if(!history.length){panel.style.display='none';return;}
+  panel.style.display='block';
+  table.innerHTML=`<table class="ctable" style="width:100%">
+    <thead><tr><th>List Name</th><th>Last Blasted</th><th>Days Ago</th><th>Contacts</th><th></th></tr></thead>
+    <tbody>${history.map(h=>{
+      const days=getDaysAgo(h.lastBlastedTs);
+      const urgency=days>=21?'#dc2626':days>=14?'#d97706':days>=7?'#f59e0b':'#166534';
+      const badge=days>=21?'🔴 Re-blast now':days>=14?'🟡 Due soon':days>=7?'⚠️ Getting stale':'✅ Recent';
+      return `<tr>
+        <td style="font-size:12px;font-weight:600">${h.filename}</td>
+        <td style="font-size:12px;color:#888">${h.lastBlasted}</td>
+        <td style="font-size:12px;color:${urgency};font-weight:600">${days}d ago — ${badge}</td>
+        <td style="font-size:12px">${h.contactCount}</td>
+        <td><button onclick="reBlastList('${h.filename.replace(/'/g,"\'")}')" class="btn-s" style="padding:4px 10px;font-size:11px;color:#7c3aed;border-color:#c4b5fd">↺ Re-upload</button></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+function reBlastList(filename){
+  toast('📂 Select '+filename+' from your files to re-blast','info',5000);
+  setTimeout(()=>document.getElementById('csvIn').click(),400);
+}
+
+function syncABToggle(source){
+  // Keep both checkboxes in sync
+  const t=document.getElementById('abTestEnabled');
+  const s=document.getElementById('abTestEnabledSend');
+  if(t)t.checked=source.checked;
+  if(s)s.checked=source.checked;
+  // Show/hide preview
+  const bar=document.getElementById('abPreviewBar');
+  if(bar)bar.style.display=source.checked?'block':'none';
+  // Update previews if enabled
+  if(source.checked){
+    const pa=document.getElementById('abPreviewA');
+    const pb=document.getElementById('abPreviewB');
+    if(pa)pa.textContent=document.getElementById('subj')?.value||'—';
+    if(pb)pb.textContent=document.getElementById('subjB')?.value||'—';
+  }
+}
+
+function populateSendTemplatePicker(){
+  const templates=getTemplates();
+  const picker=document.getElementById('sendTemplatePicker');
+  if(!picker)return;
+  const current=document.getElementById('activeTemplateName')?.textContent||'Default template';
+  picker.innerHTML='<option value="">-- Default template --</option>'+templates.map(t=>`<option value="${t.name.replace(/"/g,'&quot;')}" ${t.name===current?'selected':''}>${t.name}</option>`).join('');
+}
+
+function loadTemplateFromSendTab(name){
+  if(!name)return;
+  loadTemplate(name);
+  const sat=document.getElementById('sendActiveTemplate');
+  if(sat)sat.textContent=name;
+}
+
+function showSuspendedBanner(email){
+  // Gmail resets at midnight Pacific Time
+  const now=new Date();
+  const ptOffset=-7; // PDT (adjust to -8 for PST in winter)
+  const ptNow=new Date(now.getTime()+(now.getTimezoneOffset()+ptOffset*60)*60000);
+  const ptMidnight=new Date(ptNow);
+  ptMidnight.setHours(24,0,0,0); // next midnight PT
+  const msUntilMidnight=ptMidnight-ptNow;
+  const resetTs=Date.now()+msUntilMidnight;
+  // Save to localStorage so it persists after refresh
+  const suspended=JSON.parse(localStorage.getItem('blaster_suspended')||'[]');
+  if(!suspended.find(s=>s.email===email)){
+    suspended.push({email,resetTs});
+    localStorage.setItem('blaster_suspended',JSON.stringify(suspended));
+  }
+  renderSuspendedBanner();
+}
+
+function dismissSuspendedBanner(){
+  localStorage.removeItem('blaster_suspended');
+  const banner=document.getElementById('suspendedBanner');
+  if(banner)banner.style.display='none';
+}
+
+function renderSuspendedBanner(){
+  const suspended=JSON.parse(localStorage.getItem('blaster_suspended')||'[]');
+  const banner=document.getElementById('suspendedBanner');
+  const msg=document.getElementById('suspendedMsg');
+  if(!banner||!msg)return;
+  // Remove expired
+  const now=Date.now();
+  const active=suspended.filter(s=>s.resetTs>now);
+  if(active.length!==suspended.length){
+    localStorage.setItem('blaster_suspended',JSON.stringify(active));
+  }
+  if(!active.length){banner.style.display='none';return;}
+  banner.style.display='block';
+  msg.innerHTML=active.map(s=>{
+    const msLeft=s.resetTs-now;
+    const hrs=Math.floor(msLeft/(1000*60*60));
+    const mins=Math.floor((msLeft%(1000*60*60))/(1000*60));
+    const resetStr=new Date(s.resetTs).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    return '<div style="margin-top:4px">🚫 <strong>'+s.email+'</strong> — suspended until '+resetStr+' (resets in '+hrs+'h '+mins+'m)</div>';
+  }).join('');
+}
+
+/* ── SCHEDULED BLAST ── */
+let scheduleTimer=null;
+let scheduleInterval=null;
+
+function scheduleBlast(){
+  const timeInput=document.getElementById('scheduleTime')?.value;
+  if(!timeInput){alert('Pick a time first.');return;}
+
+  // Build target Date for today or tomorrow
+  const now=new Date();
+  const [h,m]=timeInput.split(':').map(Number);
+  const target=new Date();
+  target.setHours(h,m,0,0);
+  // If time already passed today, schedule for tomorrow
+  if(target<=now)target.setDate(target.getDate()+1);
+
+  const msUntil=target-now;
+  const mins=Math.round(msUntil/60000);
+  const hrs=Math.floor(mins/60);
+  const remMins=mins%60;
+  const timeStr=target.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const dateStr=target.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});
+
+  if(scheduleTimer)clearTimeout(scheduleTimer);
+  if(scheduleInterval)clearInterval(scheduleInterval);
+
+  scheduleTimer=setTimeout(()=>{
+    clearInterval(scheduleInterval);
+    document.getElementById('scheduleStatus').style.display='none';
+    document.getElementById('scheduleBtn').style.display='inline-flex';
+    document.getElementById('cancelScheduleBtn').style.display='none';
+    toast('⏰ Scheduled blast firing now!','success',5000);
+    startSend(false);
+  },msUntil);
+
+  // Countdown ticker
+  scheduleInterval=setInterval(()=>{
+    const remaining=target-new Date();
+    if(remaining<=0){clearInterval(scheduleInterval);return;}
+    const rh=Math.floor(remaining/3600000);
+    const rm=Math.floor((remaining%3600000)/60000);
+    const rs=Math.floor((remaining%60000)/1000);
+    const el2=document.getElementById('scheduleStatus');
+    if(el2)el2.innerHTML='⏰ Blast scheduled for <strong>'+timeStr+' ('+dateStr+')</strong> — firing in <strong>'+(rh>0?rh+'h ':'')+rm+'m '+rs+'s</strong>';
+  },1000);
+
+  // Show status
+  const el2=document.getElementById('scheduleStatus');
+  if(el2){
+    el2.style.display='block';
+    el2.innerHTML='⏰ Blast scheduled for <strong>'+timeStr+' ('+dateStr+')</strong> — firing in <strong>'+(hrs>0?hrs+'h ':'')+remMins+'m</strong>';
+  }
+  document.getElementById('scheduleBtn').style.display='none';
+  document.getElementById('cancelScheduleBtn').style.display='inline-flex';
+  toast('⏰ Blast scheduled for '+timeStr+' — '+( hrs>0?hrs+'h ':'')+remMins+'m from now','success',5000);
+}
+
+function cancelSchedule(){
+  if(scheduleTimer)clearTimeout(scheduleTimer);
+  if(scheduleInterval)clearInterval(scheduleInterval);
+  scheduleTimer=null;scheduleInterval=null;
+  document.getElementById('scheduleStatus').style.display='none';
+  document.getElementById('scheduleBtn').style.display='inline-flex';
+  document.getElementById('cancelScheduleBtn').style.display='none';
+  toast('Schedule cancelled','warn',3000);
+}
+
+function resetSendButton(){
+  sending=false;pauseRequested=false;
+  const _btn=document.getElementById('sendBtn');
+  if(_btn){_btn.disabled=false;_btn.innerHTML='&#x1F680; Send to selected contacts';}
+  const _pb=document.getElementById('pauseBtn');
+  if(_pb)_pb.style.display='none';
+  const _sb=document.getElementById('sendBar');
+  if(_sb)_sb.style.display='none';
+  // Keep live counter visible after blast so you can see final tally
+}
+function pauseSend(){pauseRequested=true;toast('&#x23F8; Pausing after current email...','purple',4000);}
+function forceResume(){document.getElementById('pausedBanner').style.display='none';toast('&#x26A0; Limit override active','warn',4000);startSend(true);}
+
+async function startSend(forceOverride){
+  if(sending)return;
+  if(!contacts.length){alert('Upload contacts first.');return;}
+  const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  if(!accounts.length){alert('Add at least one Gmail account in Gmail Setup first.');showTab('sender');return;}
+  rotationIdx=0;
+
+  const activeAccts2=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass).length||1;
+  const sendMode2=document.querySelector('input[name="sendMode"]:checked')?.value||'auto';
+  // In pick mode, cap is per single account. In auto rotate, cap is total across all accounts
+  const cap=sendMode2==='auto'?getCap()*activeAccts2:getCap();
+  const ds=getDailySent(),stopN=Math.floor(cap*getStopPct());
+  if(!forceOverride&&ds>=stopN){
+    toast('&#x1F6D1; Already at daily limit ('+ds+'/'+cap+'). Adjust in Throttle tab.','danger',7000);
+    document.getElementById('pausedBanner').style.display='flex';
+    updateLimitUI();return;
+  }
+
+  const toSend=contacts.filter(c=>selectedIds.has(c._id)&&c._status!=='sent');
+  const alreadySent=contacts.filter(c=>selectedIds.has(c._id)&&c._status==='sent').length;
+  if(alreadySent>0)toast('&#x23ED; Skipping '+alreadySent+' already sent &mdash; picking up where you left off','info',5000);
+  if(!toSend.length){alert('All selected contacts have already been sent to!');return;}
+
+  // Lock manual account selection for entire blast
+  const _selAcc=getSelectedAccount();
+  const lockedManualEmail=_selAcc?_selAcc.email:null;
+  const lockedManualPass=_selAcc?_selAcc.pass:null;
+  sending=true;pauseRequested=false;warnedAt75=false;warnedAt90=false;
+  const btn=document.getElementById('sendBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Sending...';
+  document.getElementById('pauseBtn').style.display='inline-flex';
+  document.getElementById('sendBar').style.display='block';
+  document.getElementById('logCard').style.display='block';
+  // Don't wipe existing log — new entries append via renderLog()
+  document.getElementById('limitBarWrap').style.display='block';
+  // Don't wipe sendLog — append to it so history accumulates
+  let done=0,sessionSent=0,abIndex=0;
+
+  // Ping all accounts before blast — suspend any that hit 550
+  el('sendMsg','Testing accounts before blast...');
+  const _pingAccts = lockedManualEmail
+    ? [{email:lockedManualEmail, pass:lockedManualPass}]
+    : getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  for(const _pa of _pingAccts){
+    try{
+      const _pr = await sendEmailDirect({user:_pa.email,pass:_pa.pass,from:_pa.email,to:_pa.email,subject:'Blaster ping',text:'Ping'});
+      if(!_pr.ok){
+        const _lim = _pr.error&&(_pr.error.includes('550')||_pr.error.includes('limit')||_pr.error.includes('quota')||_pr.error.includes('Too many')||_pr.error.includes('421'));
+        if(_lim){
+          const _allA=getGmailAccounts();
+          const _fa=_allA.find(a=>a.email===_pa.email);
+          if(_fa){_fa.confirmedMaxed=true;saveGmailAccounts(_allA);}
+          showSuspendedBanner(_pa.email);
+          toast('⛔ '+_pa.email+' is at daily limit — skipping','warn',4000);
+        }
+      }
+    }catch(e){}
+    await sleep(500);
+  }
+
+  toast('Starting blast &mdash; '+toSend.length+' emails queued','info',4000);
+
+  for(const c of toSend){
+    if(pauseRequested){
+      if(sessionSent>0)toast('&#x23F8; Paused after '+sessionSent+' emails this session','purple',6000);
+      break;
+    }
+    const _sendMode=document.querySelector('input[name="sendMode"]:checked')?.value||'auto';
+    const _acctCount=getGmailAccounts?getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass).length||1:1;
+    const nowSent=getDailySent(),nowStop=Math.floor(getCap()*(_sendMode==='auto'?_acctCount:1)*getStopPct());
+    if(!forceOverride&&nowSent>=nowStop){
+      toast('&#x1F6D1; Daily limit hit ('+nowSent+'/'+getCap()+'). Blast paused automatically.','danger',9000);
+      document.getElementById('pausedBanner').style.display='flex';
+      break;
+    }
+    if(!checkAlerts())break;
+
+    const useB=abIndex%2===1;abIndex++;
+    const body=fillTemplate(c),subj=fillSubject(c,useB);
+    c._abSubject=useB?'B':'A';
+    const emails=(c._emails||[]).filter(e=>e&&e.trim()&&e.includes('@')&&e.includes('.'));
+    if(!emails.length){
+      done++;
+      continue;
+    }
+    updateCSt(c._id,'sending');
+    if(true){
+      let anySent=false;
+      for(let ei=0;ei<emails.length;ei++){
+        // Check limit before EACH email send (each counts toward daily cap)
+        const _sendMode2=document.querySelector('input[name="sendMode"]:checked')?.value||'auto';
+        const _acctCount2=getGmailAccounts?getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass).length||1:1;
+        const nowSent2=getDailySent(),nowStop2=Math.floor(getCap()*(_sendMode2==='auto'?_acctCount2:1)*getStopPct());
+        if(!forceOverride&&nowSent2>=nowStop2){
+          toast('&#x1F6D1; Daily limit hit mid-contact. Stopping.','danger',9000);
+          document.getElementById('pausedBanner').style.display='flex';
+          pauseRequested=true; break;
+        }
+        const to=emails[ei];
+        try{
+          const sendMode=document.querySelector('input[name="sendMode"]:checked')?.value||'auto';
+          // Get account — manual locks to one, auto rotates
+          let acc=(lockedManualEmail&&lockedManualPass)?{email:lockedManualEmail,pass:lockedManualPass}:getNextAccount();
+          if(!acc){
+            // No account available — stop sending for this contact, move to next
+            if(ei===0){
+              // No account available at all — pause blast
+              toast('&#x1F6D1; All accounts at daily limit — blast stopped.','danger',8000);
+              pauseRequested=true;
+            }
+            break;
+          }
+          // Try sending — if 550, confirm then failover
+          let result=await sendEmailDirect({user:acc.email,pass:acc.pass,from:acc.email,to,subject:subj,text:body,replyTo:acc.email});
+          const isLimitError=(err)=>err&&(err.includes('550')||err.includes('Daily')||err.includes('limit exceeded')||err.includes('quota')||err.includes('Too many')||err.includes('Service unavailable')||err.includes('421')||err.includes('sending limit'));
+          if(!result.ok && isLimitError(result.error)){
+            // Wait 2s and retry same account to confirm it's really maxed
+            await sleep(2000);
+            const retry=await sendEmailDirect({user:acc.email,pass:acc.pass,from:acc.email,to,subject:subj,text:body,replyTo:acc.email});
+            if(retry.ok){
+              result=retry; // false alarm, it went through
+            } else if(isLimitError(retry.error)){
+              // Confirmed maxed — mark it and try next account
+              markAccountMaxed(acc.email);
+              showSuspendedBanner(acc.email);
+              toast('&#x1F6D1; '+acc.email+' hit daily limit — switching to next account','warn',5000);
+              if(sendMode==='auto'){
+                const nextAcc=getNextAccount();
+                if(nextAcc){
+                  // Retry with next account
+                  result=await sendEmailDirect({user:nextAcc.email,pass:nextAcc.pass,from:nextAcc.email,to,subject:subj,text:body,replyTo:nextAcc.email});
+                  if(result.ok)acc=nextAcc;
+                  else{throw new Error(result.error||'Backup account failed: '+result.error);}
+                } else {
+                  pauseRequested=true;
+                  toast('&#x1F6D1; All accounts at daily limit — blast stopped.','danger',8000);
+                  break;
+                }
+              } else {
+                // Manual mode — stop
+                pauseRequested=true;
+                toast('&#x1F6D1; '+acc.email+' at daily limit. Switch to Auto rotate to use both accounts.','danger',6000);
+                break;
+              }
+            } else {
+              throw new Error(retry.error||'Unknown send error');
+            }
+          } else if(!result.ok){
+            throw new Error(result.error||'Send failed');
+          }
+          // Success
+          sendLog.push({c,subj,status:'sent',note:'Email '+(ei+1)+' of '+emails.length+': '+to,sentTo:to,sentFrom:acc.email,ab:c._abSubject||'A'});
+          c._sentFrom=acc.email;
+          addSent(1);sessionSent++;anySent=true;
+          markAccountSent(acc.email);
+          saveStatuses();saveContactsToStorage();updateLimitUI();updateRotationStatus();populateManualPicker();
+          saveSendLog();
+        }catch(e){
+          const accEmail=typeof acc!=='undefined'&&acc?acc.email:'unknown';
+          sendLog.push({c,subj,status:'error',note:'Email '+(ei+1)+' failed ('+to+'): '+e.message,sentTo:to,sentFrom:accEmail,ab:c._abSubject||'A'});
+          saveSendLog();
+        }
+        if(ei<emails.length-1)await sleep(getDelay());
+      }
+      c._status=anySent?'sent':'error';
+    }
+    if(pauseRequested)break;
+
+    updateCSt(c._id,c._status);done++;
+    document.getElementById('sendFill').style.width=Math.round(done/toSend.length*100)+'%';
+    const ds2=getDailySent(),cap2=getCap();
+    el('sendMsg','Sending '+done+' of '+toSend.length+' &mdash; '+ds2+'/'+cap2+' daily emails used');
+    renderLog();updateSendStats();updateLimitUI();
+    const _lc=document.getElementById('liveCounter');
+    if(_lc){_lc.style.display='block';
+      document.getElementById('liveCountSent').textContent=sendLog.filter(l=>l.status==='sent').length;
+      document.getElementById('liveCountErr').textContent=sendLog.filter(l=>l.status==='error').length;
+      document.getElementById('liveCountRemain').textContent=Math.max(0,toSend.length-done);
+    }
+
+    if(done<toSend.length&&!pauseRequested)await sleep(getDelay());
+  }
+
+  resetSendButton();
+  const ok=sendLog.filter(l=>l.status==='sent').length,bad=sendLog.filter(l=>l.status==='error').length;
+  const abA=sendLog.filter(l=>l.status==='sent'&&l.ab!=='B').length;
+  const abB=sendLog.filter(l=>l.status==='sent'&&l.ab==='B').length;
+  const abEnabled=document.getElementById('abTestEnabled')?.checked;
+  const abSummary=abEnabled&&abB>0?' | A/B: Subject A='+abA+' sent, Subject B='+abB+' sent':'';
+  el('sendMsg','Done! '+ok+' sent, '+bad+' errors. '+getDailySent()+'/'+getCap()+' daily emails used.'+abSummary);
+  updateStats();updateLimitUI();
+  saveSendLog();
+  if(ok>0){
+    toast('&#x2705; Blast complete &mdash; '+ok+' emails sent!','success',6000);
+    autoSaveSentEmails();
+    const sentContacts=contacts.filter(c=>c._status==='sent');
+    const campName=document.getElementById('activeTemplateName')?.textContent||'Unknown';
+    addToSequence(sentContacts,campName);
+    toast('&#x1F501; '+sentContacts.length+' contacts added to follow-up sequence','info',4000);
+    updateFollowupBadge();
+  }
+  if(bad>0)toast('&#x26A0; '+bad+' emails failed &mdash; check log','warn',5000);
+}
+
+function updateCSt(id,st){
+  const e=document.getElementById('st-'+id);if(e){e.className='sbadge s-'+st;e.textContent=st;}
+  const r=document.getElementById('row-'+id);if(r)r.classList.toggle('sel',st!=='sent');
+}
+function saveSendLog(){
+  try{
+    if(!sendLog.length)return;
+    // Build fresh entries from current sendLog
+    const fresh=sendLog.map(l=>({
+      name:(l.c.first_name||'')+' '+(l.c.last_name||''),
+      address:l.c.address||'',
+      sentTo:l.sentTo||'',
+      sentFrom:l.sentFrom||'',
+      status:l.status,
+      note:l.note,
+      subj:l.subj,
+      ab:l.ab||'A',
+      ts:l.ts||Date.now()
+    }));
+    // Stamp each entry with current time if not already stamped
+    fresh.forEach(e=>{if(!e.ts)e.ts=Date.now();});
+    // Merge with existing history, dedupe by sentTo+ts, keep 30 days
+    const existing=JSON.parse(localStorage.getItem('blaster_send_log_history')||'[]');
+    const cutoff=Date.now()-(30*24*60*60*1000);
+    // Add fresh entries that aren't already in history
+    const existingKeys=new Set(existing.map(e=>e.sentTo+'_'+e.ts));
+    const newEntries=fresh.filter(e=>!existingKeys.has(e.sentTo+'_'+e.ts));
+    const combined=[...existing,...newEntries].filter(l=>l.ts>cutoff);
+    localStorage.setItem('blaster_send_log_history',JSON.stringify(combined));
+    localStorage.setItem('blaster_send_log_last',JSON.stringify(fresh));
+    // Also save to server file
+    try{fetch(SERVER+'/api/data/send_log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:combined})}).catch(()=>{});}catch(e2){}
+  }catch(e){console.log('Could not save send log:',e);}
+}
+
+function loadSendLog(){
+  // Try server file first
+  fetch(SERVER+'/api/data/send_log').then(r=>r.json()).then(d=>{
+    if(d.ok&&d.data&&d.data.length){
+      const history=d.data;
+      const log=history.slice(-500).reverse();
+      document.getElementById('logCard').style.display='block';
+      document.getElementById('logBody').innerHTML=log.map(l=>{
+        const sentFrom=l.sentFrom||'—';
+        const sentTo=l.sentTo||'—';
+        const status=l.status||'';
+        const note=l.note||'';
+        const ab=l.ab||'A';
+        return '<tr><td>'+(l.name||'')+'</td><td>'+(l.address||'')+'</td><td style="font-size:12px">'+sentTo+'</td><td style="font-size:11px;color:#4c1d95;font-weight:600">'+sentFrom+'</td><td><span class="sbadge '+(ab==='B'?'s-ai':'s-pending')+'" style="font-size:10px">'+ab+'</span></td><td><span class="sbadge s-'+status+'">'+status+'</span></td><td style="font-size:12px;color:#666">'+note+'</td></tr>';
+      }).join('');
+      toast('&#x1F4BE; '+history.length+' send log entries loaded','info',3000);
+    }
+  }).catch(()=>{});
+  try{
+    const history=JSON.parse(localStorage.getItem('blaster_send_log_history')||'[]');
+    if(!history.length)return;
+    // Show most recent 500 entries
+    const log=history.slice(-500).reverse();
+    document.getElementById('logCard').style.display='block';
+    document.getElementById('logBody').innerHTML=log.map(l=>`<tr>
+      <td>${l.name}</td>
+      <td>${l.address}</td>
+      <td style="font-size:12px">${l.sentTo||'&mdash;'}</td>
+      <td style="font-size:11px;color:#4c1d95;font-weight:600">${l.sentFrom||'&mdash;'}</td>
+      <td><span class="sbadge ${l.ab==='B'?'s-ai':'s-pending'}" style="font-size:10px">${l.ab||'A'}</span></td>
+      <td><span class="sbadge s-${l.status}">${l.status}</span></td>
+      <td style="font-size:12px;color:#666">${l.note}</td>
+    </tr>`).join('');
+    toast('&#x1F4BE; '+history.length+' send log entries restored','info',3000);
+  }catch(e){}
+}
+
+function renderLog(){
+  // Show current session + any history from localStorage
+  const history=JSON.parse(localStorage.getItem('blaster_send_log_history')||'[]');
+  const combined=sendLog.length?sendLog:history.slice(-200).reverse();
+  document.getElementById('logCard').style.display=combined.length?'block':'none';
+  document.getElementById('logBody').innerHTML=combined.map(l=>{
+    const name=l.c?(l.c.first_name||'')+' '+(l.c.last_name||''):l.name||'';
+    const addr=l.c?l.c.address||'':l.address||'';
+    const sentTo=l.sentTo||'&mdash;';
+    const sentFrom=l.sentFrom||'&mdash;';
+    const ab=l.ab||'A';
+    const status=l.status;
+    const note=l.note||'';
+    return '<tr><td>'+name+'</td><td>'+addr+'</td><td style="font-size:12px">'+sentTo+'</td><td style="font-size:11px;color:#4c1d95;font-weight:600">'+sentFrom+'</td><td><span class="sbadge '+(ab==='B'?'s-ai':'s-pending')+'" style="font-size:10px">'+ab+'</span></td><td><span class="sbadge s-'+status+'">'+status+'</span></td><td style="font-size:12px;color:#666">'+note+'</td></tr>';
+  }).join('');
+}
+function exportLog(){
+  try{
+    const history=JSON.parse(localStorage.getItem('blaster_send_log_history')||'[]');
+    if(!history.length&&!sendLog.length){alert('No send log yet.');return;}
+    const h=['name','address','email','sent_from','ab','status','note','date'];
+    let rows;
+    if(history.length){
+      rows=history.map(l=>[
+        '"'+(l.name||'').replace(/"/g,'""')+'"',
+        '"'+(l.address||'').replace(/"/g,'""')+'"',
+        '"'+(l.sentTo||'').replace(/"/g,'""')+'"',
+        '"'+(l.sentFrom||'').replace(/"/g,'""')+'"',
+        '"'+(l.ab||'A')+'"',
+        '"'+l.status+'"',
+        '"'+(l.note||'').replace(/"/g,'""')+'"',
+        '"'+new Date(l.ts).toLocaleString()+'"'
+      ].join(','));
+    } else {
+      rows=sendLog.map(l=>[
+        '"'+((l.c.first_name||'')+' '+(l.c.last_name||'')).replace(/"/g,'""')+'"',
+        '"'+(l.c.address||'').replace(/"/g,'""')+'"',
+        '"'+(l.sentTo||'').replace(/"/g,'""')+'"',
+        '"'+(l.sentFrom||'').replace(/"/g,'""')+'"',
+        '"'+(l.ab||'A')+'"',
+        '"'+l.status+'"',
+        '"'+(l.note||'').replace(/"/g,'""')+'"',
+        '"'+new Date().toLocaleString()+'"'
+      ].join(','));
+    }
+    const a=document.createElement('a');
+    a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([h.join(','),...rows].join('\n'));
+    a.download='blast_log_'+new Date().toISOString().slice(0,10)+'.csv';
+    a.click();
+    toast('⬇ Exported '+rows.length+' log entries','success',3000);
+  }catch(e){alert('Export failed: '+e.message);}
+}
+
+
+/* ═══════════════════════════════════════
+   REPLIES CHECKER
+   ═══════════════════════════════════════ */
+async function checkReplies(){
+  const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  if(!accounts.length){alert('No Gmail accounts configured.');return;}
+
+  const btn=document.getElementById('checkRepliesBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Checking...';
+  document.getElementById('repliesBar').style.display='block';
+  document.getElementById('repliesStatus').textContent='Checking '+accounts.length+' accounts...';
+  document.getElementById('repliesList').innerHTML='';
+  document.getElementById('repliesResult').innerHTML='';
+
+  const allReplies=[];
+  const since=new Date(Date.now()-7*24*60*60*1000).toISOString();
+
+  // Build set of all blasted emails from contacts list for filtering
+  const blastLog=JSON.parse(localStorage.getItem('blaster_send_log_history')||'[]');
+  const blastedEmails=new Set(blastLog.map(l=>(l.sentTo||'').toLowerCase()).filter(Boolean));
+  // Also include all emails currently in contacts
+  contacts.forEach(c=>(c._emailsRaw||c._emails||[]).forEach(e=>blastedEmails.add(e.toLowerCase())));
+
+  for(let i=0;i<accounts.length;i++){
+    const acc=accounts[i];
+    document.getElementById('repliesFill').style.width=Math.round((i/accounts.length)*100)+'%';
+    document.getElementById('repliesStatus').textContent='Checking '+acc.email+'...';
+    try{
+      const res=await fetch('http://localhost:3456/api/check-replies',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({user:acc.email,pass:acc.pass,since})
+      });
+      const data=await res.json();
+      if(data.ok&&data.messages.length){
+        // Only keep replies FROM people we blasted
+        const filtered=data.messages.filter(m=>blastedEmails.has((m.fromEmail||'').toLowerCase()));
+        filtered.forEach(m=>allReplies.push({...m,account:acc.email}));
+      }
+    }catch(e){
+      console.log('IMAP error for '+acc.email+':',e.message);
+    }
+  }
+
+  document.getElementById('repliesFill').style.width='100%';
+  document.getElementById('repliesBar').style.display='none';
+  document.getElementById('repliesStatus').textContent='';
+
+  btn.disabled=false;btn.innerHTML='📨 Check replies now';
+
+  if(!allReplies.length){
+    document.getElementById('repliesResult').innerHTML='<span style="color:#888">No replies found in the last 7 days.</span>';
+    return;
+  }
+
+  // Sort newest first
+  allReplies.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  // Update badge
+  const badge=document.getElementById('repliesBadge');
+  if(badge){badge.style.display='inline';badge.textContent=allReplies.length;}
+
+  document.getElementById('repliesResult').innerHTML=
+    '<span style="color:#166534;font-weight:600">📨 '+allReplies.length+' replies found across '+accounts.length+' accounts</span>';
+
+  document.getElementById('repliesList').innerHTML=allReplies.map(r=>{
+    const date=r.date?new Date(r.date).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+    const preview=(r.text||'').slice(0,200).split('\n').join(' ');
+    return '<div style="background:#fff;border:1px solid #e5e5e2;border-radius:8px;padding:14px 16px;margin-bottom:10px">'+
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px">'+
+        '<div>'+
+          '<div style="font-size:14px;font-weight:600;color:#1a1a1a">'+r.from+'</div>'+
+          '<div style="font-size:12px;color:#888;margin-top:2px">to: '+r.account+' &nbsp;·&nbsp; '+date+'</div>'+
+        '</div>'+
+        '<div style="display:flex;gap:6px;flex-shrink:0">'+
+          '<button class="btn-s" style="font-size:11px;padding:3px 8px;color:#166534;border-color:#86efac" onclick="addToUnsub(this.dataset.e)" data-e="'+r.fromEmail+'">Unsub</button>'+
+          '<button class="btn-s" style="font-size:11px;padding:3px 8px;color:#7c3aed;border-color:#c4b5fd" onclick="flagAsLead(this.dataset.e,this.dataset.n)" data-e="'+r.fromEmail+'" data-n="'+r.from.replace(/"/g,'')+'">🔥 Lead</button>'+
+        '</div>'+
+      '</div>'+
+      '<div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px">'+r.subject+'</div>'+
+      '<div style="font-size:12px;color:#666;line-height:1.5">'+preview+(preview.length>=200?'...':'')+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+function addToUnsub(email){
+  if(!email)return;
+  const el2=document.getElementById('unsubEmails');
+  if(el2){
+    const current=el2.value.trim();
+    if(!current.includes(email))el2.value=current?(current+'\n'+email):email;
+    saveUnsubList();applyFilters();
+    toast('Added '+email+' to unsubscribe list','success',3000);
+  }
+}
+
+function flagAsLead(email,name){
+  toast('🔥 '+name+' flagged as lead — follow up!','success',5000);
+  // Could expand this to add to a leads list in future
+}
+
+/* ═══════════════════════════════════════
+   EMAIL FILTERS
+   ═══════════════════════════════════════ */
+function getBlockedDomains(){
+  return (localStorage.getItem('blaster_blocked_domains')||'').split('\n').map(s=>s.trim().toLowerCase()).filter(Boolean);
+}
+function getSentEmails(){
+  return (localStorage.getItem('blaster_sent_emails')||'').split('\n').map(s=>s.trim().toLowerCase()).filter(Boolean);
+}
+function getUnsubEmails(){
+  return (localStorage.getItem('blaster_unsub_emails')||'').split('\n').map(s=>s.trim().toLowerCase()).filter(Boolean);
+}
+function saveFilterSettings(){
+  const bd=document.getElementById('blockedDomains');
+  if(bd)localStorage.setItem('blaster_blocked_domains',bd.value);
+}
+function saveSentList(){
+  const se=document.getElementById('sentEmails');
+  if(se)localStorage.setItem('blaster_sent_emails',se.value);
+}
+function saveUnsubList(){
+  const ue=document.getElementById('unsubEmails');
+  if(ue)localStorage.setItem('blaster_unsub_emails',ue.value);
+}
+function loadFilterSettings(){
+  const bd=document.getElementById('blockedDomains');
+  if(bd){const v=localStorage.getItem('blaster_blocked_domains');if(v)bd.value=v;}
+  const se=document.getElementById('sentEmails');
+  if(se){
+    // Load from localStorage immediately
+    const v=localStorage.getItem('blaster_sent_emails');if(v)se.value=v;
+    // Then merge with server file
+    fetch(SERVER+'/api/data/sent_emails').then(r=>r.json()).then(d=>{
+      if(d.ok&&d.data&&d.data.length){
+        const local=(se.value||'').split('\n').filter(Boolean);
+        const combined=[...new Set([...d.data,...local])];
+        se.value=combined.join('\n');
+        localStorage.setItem('blaster_sent_emails',se.value);
+        updateSentCount();
+      }
+    }).catch(()=>{});
+  }
+  const ue=document.getElementById('unsubEmails');
+  if(ue){const v=localStorage.getItem('blaster_unsub_emails');if(v)ue.value=v;}
+  updateUnsubCount();updateSentCount();
+}
+function updateUnsubCount(){
+  const u=getUnsubEmails();
+  const el2=document.getElementById('unsubCount');
+  if(el2)el2.textContent=u.length>0?u.length+' email(s) on unsub list':'';
+}
+function updateSentCount(){
+  const s=getSentEmails();
+  const el2=document.getElementById('sentListCount');
+  if(el2)el2.textContent=s.length>0?s.length+' email(s) in sent history':'';
+}
+
+function isValidEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+const ROLE_PREFIXES=['info','admin','support','noreply','no-reply','sales','contact','hello','help','billing','office','team','postmaster','webmaster','newsletter','marketing','hr','careers','legal','privacy','abuse','security','spam','hostmaster'];
+const DISPOSABLE_DOMAINS=['mailinator.com','guerrillamail.com','tempmail.com','throwam.com','yopmail.com','sharklasers.com','guerrillamailblock.com','grr.la','guerrillamail.info','trashmail.com','trashmail.me','trashmail.net','dispostable.com','fakeinbox.com','spamgourmet.com','maildrop.cc','mailnull.com','spamspot.com','discard.email','spamfree24.org','spam4.me','binkmail.com','bobmail.info','chammy.info','devnullmail.com','dingbone.com','fantasymail.de','frapmail.com','getonemail.com','girlsundertheinfluence.com','hailmail.net','ieh-mail.de','inoutmail.de','inoutmail.eu','inoutmail.info','inoutmail.net','jetable.com','jetable.fr.nf','jetable.net','jetable.org','keepmymail.com','killmail.com','killmail.net','mailandftp.com','mailblocks.com','mailbucket.org','mailc.net','mailcan.com','mailexpire.com','mailfs.com','mailguard.me','mailimate.com','mailin8r.com','mailinater.com','mailismagic.com','mailme.ir','mailme.lv','mailme24.com','mailmetrash.com','mailmoat.com','mailnew.com','mailnull.com','mailpick.biz','mailrock.biz','mailscrap.com','mailshell.com','mailsiphon.com','mailslite.com','mailsucksbigtime.com','mailtemp.info','mailtome.de','mailtothis.com','mailtrash.net','mailtv.net','mailzilla.com','makemetheking.com','mbx.cc','mega.zik.dj','meinspamschutz.de','meltmail.com','messagebeamer.de','moncourrier.fr.nf','monemail.fr.nf','monmail.fr.nf','mt2009.com','mt2014.com','mypartyclip.de','myphantomemail.com','mysamp.de','neomailbox.com','nepwk.com','nervmich.net','nervtmich.net','netmails.com','netmails.net','netzidiot.de','neverbox.com','nice-4u.com','no-spam.ws','nobulk.com','noclickemail.com','nogmailspam.info','nospam.ze.tc','nospam4.us','nospamfor.us','nospammail.net','nospamthanks.info','notmailinator.com','notsharingmy.info','nowmymail.com','objectmail.com','obobbo.com','odaymail.com','odnorazovoe.ru','one-time.email','oneoffemail.com'];
+const INTERNATIONAL_DOMAINS=['qq.com','yandex.ru','yandex.com','mail.ru','163.com','126.com','sina.com','sohu.com','tom.com','yeah.net','21cn.com','foxmail.com'];
+
+function scrubNewContacts(subset){
+  // Run free scrub rules on a specific subset of contacts only
+  const scrubRole=document.getElementById('scrubRoleBased')?.checked!==false;
+  const scrubDisposable=document.getElementById('scrubDisposable')?.checked!==false;
+  const scrubIntl=document.getElementById('scrubInternational')?.checked||false;
+  const scrubShort=document.getElementById('scrubShortDomain')?.checked||false;
+  let removed=0;
+  subset.forEach(c=>{
+    if(!c._emailsRaw)c._emailsRaw=[...(c._emails||[])];
+    const filtered=[];
+    (c._emails||[]).forEach(email=>{
+      const e=email.trim().toLowerCase();
+      const parts=e.split('@');
+      if(parts.length!==2){return;}
+      const prefix=parts[0],domain=parts[1];
+      if(scrubRole&&ROLE_PREFIXES.some(r=>prefix===r||prefix.startsWith(r+'.'))){removed++;return;}
+      if(scrubDisposable&&DISPOSABLE_DOMAINS.includes(domain)){removed++;return;}
+      if(scrubIntl&&INTERNATIONAL_DOMAINS.includes(domain)){removed++;return;}
+      if(scrubShort&&domain.split('.')[0].length<4){removed++;return;}
+      filtered.push(email);
+    });
+    c._emails=filtered;
+    c._scrubbed=true;
+  });
+  return removed;
+}
+
+/* ── FREE SCRUBBER CACHE ── */
+function getScrubCache(){
+  try{return JSON.parse(localStorage.getItem('blaster_scrub_cache')||'{}');}catch(e){return{};}
+}
+function saveScrubCache(cache){
+  try{localStorage.setItem('blaster_scrub_cache',JSON.stringify(cache));}catch(e){}
+}
+
+function runFreeScrubber(){
+  if(!contacts.length){alert('Upload a list first.');return;}
+  const scrubRole=document.getElementById('scrubRoleBased')?.checked;
+  const scrubDisposable=document.getElementById('scrubDisposable')?.checked;
+  const scrubIntl=document.getElementById('scrubInternational')?.checked;
+  const scrubShort=document.getElementById('scrubShortDomain')?.checked;
+  let removedRole=0,removedDisposable=0,removedIntl=0,removedShort=0,total=0,fromCache=0;
+
+  const scrubCache=getScrubCache();
+
+  contacts.forEach(c=>{
+    if(!c._emailsRaw)c._emailsRaw=[...(c._emails||[])];
+    const filtered=[];
+    (c._emailsRaw||[]).forEach(email=>{
+      const e=email.trim().toLowerCase();
+      const parts=e.split('@');
+      if(parts.length!==2){return;}
+      const prefix=parts[0];
+      const domain=parts[1];
+      total++;
+
+      // Check cache first — if already scrubbed, use cached result
+      if(scrubCache[e]!==undefined){
+        const cachedResult=scrubCache[e];
+        if(cachedResult==='ok'){filtered.push(email);}
+        else{
+          if(cachedResult==='role')removedRole++;
+          else if(cachedResult==='disposable')removedDisposable++;
+          else if(cachedResult==='intl')removedIntl++;
+          else if(cachedResult==='short')removedShort++;
+          fromCache++;
+        }
+        return;
+      }
+
+      // Not cached — run scrub rules and save result
+      if(scrubRole&&ROLE_PREFIXES.some(r=>prefix===r||prefix.startsWith(r+'.'))){
+        removedRole++;scrubCache[e]='role';return;
+      }
+      if(scrubDisposable&&DISPOSABLE_DOMAINS.includes(domain)){
+        removedDisposable++;scrubCache[e]='disposable';return;
+      }
+      if(scrubIntl&&INTERNATIONAL_DOMAINS.includes(domain)){
+        removedIntl++;scrubCache[e]='intl';return;
+      }
+      if(scrubShort&&domain.split('.')[0].length<4){
+        removedShort++;scrubCache[e]='short';return;
+      }
+      scrubCache[e]='ok';
+      filtered.push(email);
+    });
+    c._emails=filtered;
+  });
+
+  // Save cache
+  saveScrubCache(scrubCache);
+
+  const removed=removedRole+removedDisposable+removedIntl+removedShort;
+  const kept=total-removed;
+  document.getElementById('scrubResult').innerHTML=
+    '<span style="color:#166534;font-weight:600">✅ '+kept+' emails kept</span> &nbsp;|&nbsp; '+
+    (removedRole?'<span style="color:#991b1b">'+removedRole+' role-based removed</span> &nbsp;|&nbsp; ':'')+
+    (removedDisposable?'<span style="color:#991b1b">'+removedDisposable+' disposable removed</span> &nbsp;|&nbsp; ':'')+
+    (removedIntl?'<span style="color:#d97706">'+removedIntl+' international flagged</span> &nbsp;|&nbsp; ':'')+
+    (removedShort?'<span style="color:#d97706">'+removedShort+' short domain removed</span>':'')+ 
+    (fromCache?' &nbsp;|&nbsp; <span style="color:#7c3aed">'+fromCache+' from cache</span>':'')+
+    (removed?'<br><span style="color:#888;font-size:11px">Removed emails are not deleted — only excluded from sending. Re-upload the original CSV to restore them.</span>':'');
+  // Mark all contacts with emails as scrubbed
+  contacts.forEach(c=>{if(c._emails&&c._emails.length>0)c._scrubbed=true;});
+  renderContacts();updateStats();updateSendStats();
+  toast('🧹 Scrubber done — '+removed+' removed'+(fromCache?' ('+fromCache+' from cache)':'')+', '+kept+' ready to send','success',4000);
+}
+
+/* ── MILLION VERIFIER CACHE ── */
+function getMVCache(){
+  try{return JSON.parse(localStorage.getItem('blaster_mv_cache')||'{}');}catch(e){return{};}
+}
+
+function reapplyMVCache(){
+  // Re-filter contacts from cache only — zero API calls, zero credits
+  const cache=getMVCache();
+  const keepOk=document.getElementById('mvKeepOk')?.checked!==false;
+  const keepCatchAll=document.getElementById('mvKeepCatchAll')?.checked!==false;
+  const keepUnknown=document.getElementById('mvKeepUnknown')?.checked||false;
+  const keepInvalid=document.getElementById('mvKeepInvalid')?.checked||false;
+  const keepDisposable=document.getElementById('mvKeepDisposable')?.checked||false;
+
+  const removed=new Set();
+  let totalChecked=0,totalRemoved=0;
+
+  contacts.forEach(c=>{
+    if(!c._emailsRaw)c._emailsRaw=[...(c._emails||[])];
+    // Re-evaluate all original emails against cache
+    const refiltered=(c._emailsRaw||[]).filter(email=>{
+      const cached=cache[email.toLowerCase()];
+      if(!cached)return true; // not in cache, keep it
+      totalChecked++;
+      const result=cached.result;
+      const keep=(result==='ok'&&keepOk)||(result==='catch_all'&&keepCatchAll)||
+        (result==='unknown'&&keepUnknown)||(result==='invalid'&&keepInvalid)||
+        (result==='disposable'&&keepDisposable);
+      if(!keep)removed.add(email.toLowerCase());
+      return keep;
+    });
+    c._emails=refiltered;
+  });
+
+  totalRemoved=removed.size;
+  const kept=contacts.reduce((s,c)=>s+(c._emails||[]).length,0);
+
+  document.getElementById('mvResult').innerHTML=
+    '<span style="color:#166534;font-weight:600">✅ Re-applied from cache — 0 credits used</span> &nbsp;|&nbsp; '+
+    '<span style="color:#166534">'+kept+' emails kept</span> &nbsp;|&nbsp; '+
+    '<span style="color:#dc2626">'+totalRemoved+' removed</span>';
+
+  renderContacts();updateStats();updateSendStats();
+  // Auto-select MV verified
+  selectOnlyMVVerified();
+  toast('✅ Cache re-applied — 0 credits used. '+kept+' emails ready.','success',4000);
+}
+function saveMVCache(cache){
+  try{localStorage.setItem('blaster_mv_cache',JSON.stringify(cache));}catch(e){}
+}
+function clearMVCache(){
+  localStorage.removeItem('blaster_mv_cache');
+  toast('MillionVerifier cache cleared','info',2000);
+  renderMVCacheStats();
+}
+function renderMVCacheStats(){
+  const cache=getMVCache();
+  const keys=Object.keys(cache);
+  const el2=document.getElementById('mvCacheStats');
+  if(!el2)return;
+  if(!keys.length){el2.textContent='No emails verified yet.';return;}
+  const counts={ok:0,catch_all:0,unknown:0,invalid:0,disposable:0};
+  keys.forEach(k=>{const r=cache[k].result;if(counts[r]!==undefined)counts[r]++;});
+  el2.innerHTML='<strong>'+keys.length+'</strong> emails cached &nbsp;|&nbsp; '+
+    '<span style="color:#166534">ok: '+counts.ok+'</span> &nbsp;|&nbsp; '+
+    '<span style="color:#166534">catch_all: '+counts.catch_all+'</span> &nbsp;|&nbsp; '+
+    '<span style="color:#d97706">unknown: '+counts.unknown+'</span> &nbsp;|&nbsp; '+
+    '<span style="color:#dc2626">invalid: '+counts.invalid+'</span> &nbsp;|&nbsp; '+
+    '<span style="color:#dc2626">disposable: '+counts.disposable+'</span>';
+}
+
+async function runMillionVerifier(){
+  const apiKey=(document.getElementById('mvApiKey')?.value||localStorage.getItem('blaster_mv_key')||'').trim();
+  if(!apiKey){alert('Enter your MillionVerifier API key first.');return;}
+
+  // Collect all emails from loaded contacts
+  const allEmails=[];
+  contacts.forEach(c=>{(c._emails||[]).forEach(e=>{if(e)allEmails.push({contact:c,email:e});});});
+  if(!allEmails.length){alert('No contacts loaded.');return;}
+
+  const keepOk=document.getElementById('mvKeepOk')?.checked;
+  const keepCatchAll=document.getElementById('mvKeepCatchAll')?.checked;
+  const keepUnknown=document.getElementById('mvKeepUnknown')?.checked;
+  const keepInvalid=document.getElementById('mvKeepInvalid')?.checked;
+  const keepDisposable=document.getElementById('mvKeepDisposable')?.checked;
+
+  // Check cache — skip already verified emails
+  const cache=getMVCache();
+  const toVerify=allEmails.filter(({email})=>!cache[email.toLowerCase()]);
+  const alreadyCached=allEmails.length-toVerify.length;
+
+  const btn=document.getElementById('mvBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Verifying...';
+  document.getElementById('mvBar').style.display='block';
+  document.getElementById('mvResult').innerHTML='';
+
+  if(alreadyCached>0){
+    document.getElementById('mvStatus').textContent=alreadyCached+' already verified (cached) — checking '+toVerify.length+' new emails...';
+  } else {
+    document.getElementById('mvStatus').textContent='Checking '+toVerify.length+' emails...';
+  }
+
+  const counts={ok:0,catch_all:0,unknown:0,invalid:0,disposable:0,error:0};
+  let done=0;
+  let outOfCredits=false;
+
+  // Process new emails in batches of 10
+  const batchSize=10;
+  for(let i=0;i<toVerify.length;i+=batchSize){
+    if(outOfCredits)break;
+    const batch=toVerify.slice(i,i+batchSize);
+    await Promise.all(batch.map(async ({contact,email})=>{
+      try{
+        const res=await fetch('https://api.millionverifier.com/api/v3/?api='+apiKey+'&email='+encodeURIComponent(email)+'&timeout=10');
+        const data=await res.json();
+        // Check for out of credits
+        if(data.error&&(data.error.toLowerCase().includes('credit')||data.error.toLowerCase().includes('quota')||data.error.toLowerCase().includes('limit')||data.credits===0||data.resultcode===104||data.resultcode===105)){
+          counts.error++;
+          outOfCredits=true;
+          return;
+        }
+        const result=(data.result||data.quality||'error').toLowerCase();
+        // Save to cache with timestamp
+        cache[email.toLowerCase()]={result,ts:Date.now()};
+        counts[result]=(counts[result]||0)+1;
+      }catch(e){
+        cache[email.toLowerCase()]={result:'error',ts:Date.now()};
+        counts.error++;
+      }
+      done++;
+    }));
+    // Save cache after every batch so progress is never lost
+    saveMVCache(cache);
+    const pct=Math.round(done/Math.max(toVerify.length,1)*100);
+    document.getElementById('mvFill').style.width=pct+'%';
+    document.getElementById('mvStatus').textContent='Verified '+done+' of '+toVerify.length+' new emails ('+pct+'%)...'+
+      (alreadyCached?' + '+alreadyCached+' from cache':'');
+    await new Promise(r=>setTimeout(r,100));
+  }
+
+  // Now apply keep/remove logic using cache for ALL emails (new + cached)
+  const removed=new Set();
+  allEmails.forEach(({email})=>{
+    const cached=cache[email.toLowerCase()];
+    if(!cached)return;
+    const result=cached.result;
+    // Tally cached results
+    if(toVerify.length===0||(done>0&&!toVerify.find(t=>t.email.toLowerCase()===email.toLowerCase()))){
+      counts[result]=(counts[result]||0)+1;
+    }
+    const keep=(result==='ok'&&keepOk)||(result==='catch_all'&&keepCatchAll)||
+      (result==='unknown'&&keepUnknown)||(result==='invalid'&&keepInvalid)||
+      (result==='disposable'&&keepDisposable);
+    if(!keep)removed.add(email.toLowerCase());
+  });
+
+  // Remove flagged emails from contacts
+  let totalRemoved=0;
+  contacts.forEach(c=>{
+    const before=(c._emails||[]).length;
+    c._emails=(c._emails||[]).filter(e=>!removed.has(e.toLowerCase()));
+    totalRemoved+=before-c._emails.length;
+  });
+
+  btn.disabled=false;btn.innerHTML='✅ Verify with MillionVerifier';
+  document.getElementById('mvBar').style.display='none';
+  if(outOfCredits){
+    document.getElementById('mvStatus').innerHTML='<span style="color:#dc2626;font-weight:600">⚠️ Out of MillionVerifier credits! Verified '+done+' of '+toVerify.length+' — remaining emails were NOT verified. Top up at millionverifier.com</span>';
+    toast('⚠️ Out of MV credits — only '+done+' of '+toVerify.length+' emails verified. Top up at millionverifier.com','danger',10000);
+  } else {
+    document.getElementById('mvStatus').textContent='';
+  }
+  renderMVCacheStats();
+
+  const totalChecked=allEmails.length;
+  const kept=totalChecked-totalRemoved;
+  const creditsUsed=toVerify.length-counts.error;
+  document.getElementById('mvResult').innerHTML=
+    '<span style="color:#166534;font-weight:600">✅ '+kept+' emails kept</span> &nbsp;|&nbsp; '+
+    '<span style="color:#dc2626;font-weight:600">'+totalRemoved+' removed</span> &nbsp;|&nbsp; '+
+    '<span style="color:#888">'+alreadyCached+' from cache (0 credits)</span> &nbsp;|&nbsp; '+
+    '<span style="color:#7c3aed;font-weight:600">'+creditsUsed+' credits used</span>';
+
+  renderContacts();updateStats();updateSendStats();
+  toast('✅ Done — '+creditsUsed+' credits used, '+alreadyCached+' pulled from cache','success',6000);
+}
+
+function applyFilters(){
+  if(!contacts.length)return;
+  const filterDupes=document.getElementById('filterDupes')?.checked!==false;
+  const filterInvalid=document.getElementById('filterInvalid')?.checked!==false;
+  const blockedDomains=getBlockedDomains();
+  const sentEmails=getSentEmails();
+  const unsubEmails=getUnsubEmails();
+  const seenEmails=new Set();
+
+  let totalEmails=0,removedDupe=0,removedInvalid=0,removedBlocked=0,removedSent=0,removedUnsub=0;
+
+  contacts.forEach(c=>{
+    const filtered=[];
+    if(!c._emailsRaw)c._emailsRaw=[...c._emails];
+    (c._emailsRaw||[]).forEach(email=>{
+      const e=email.trim().toLowerCase();
+      totalEmails++;
+      const domain=e.split('@')[1]||'';
+
+      if(filterInvalid&&!isValidEmail(e)){removedInvalid++;return;}
+      if(unsubEmails.includes(e)){removedUnsub++;return;}
+      if(sentEmails.includes(e)){removedSent++;return;}
+      if(blockedDomains.some(d=>domain===d||domain.endsWith('.'+d))){
+        removedBlocked++;
+        // Also strip from _emailsRaw so it never comes back
+        c._emailsRaw=(c._emailsRaw||[]).filter(e=>e.trim().toLowerCase()!==email.trim().toLowerCase());
+        return;
+      }
+      if(filterDupes&&seenEmails.has(e)){removedDupe++;return;}
+
+      seenEmails.add(e);
+      filtered.push(email);
+    });
+    c._emails=filtered;
+  });
+
+  const kept=totalEmails-removedDupe-removedInvalid-removedBlocked-removedSent-removedUnsub;
+  const summary=document.getElementById('filterSummary');
+  if(summary){
+    summary.innerHTML=
+      '<span class="filter-stat good">&#x2705; '+kept+' emails ready to send</span>'+
+      (removedInvalid?'<span class="filter-stat bad">&#x274C; '+removedInvalid+' invalid format</span>':'')+
+      (removedDupe?'<span class="filter-stat warn">&#x26A0; '+removedDupe+' duplicates removed</span>':'')+
+      (removedSent?'<span class="filter-stat warn">&#x26A0; '+removedSent+' already sent</span>':'')+
+      (removedUnsub?'<span class="filter-stat bad">&#x274C; '+removedUnsub+' unsubscribed</span>':'')+
+      (removedBlocked?'<span class="filter-stat bad">&#x274C; '+removedBlocked+' blocked domain</span>':'');
+  }
+  // Deselect contacts that have no emails after filtering
+  contacts.forEach(c=>{
+    if(!c._emails||c._emails.length===0)selectedIds.delete(c._id);
+  });
+  renderContacts();updateStats();updateSendStats();
+  toast('Filters applied &mdash; '+kept+' emails ready','success',3000);
+}
+
+function importSentLog(){
+  if(!sendLog.length){alert('No send log yet. Send some emails first.');return;}
+  const emails=sendLog.filter(l=>l.status==='sent'&&l.sentTo).map(l=>l.sentTo.toLowerCase());
+  const unique=[...new Set(emails)];
+  const el2=document.getElementById('sentEmails');
+  if(el2){
+    const existing=(el2.value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+    const combined=[...new Set([...existing,...unique])];
+    el2.value=combined.join('\n');
+    saveSentList();updateSentCount();
+    toast('Imported '+unique.length+' sent emails','success',3000);
+  }
+}
+
+function clearSentList(){
+  if(!confirm('Clear the previously sent list?'))return;
+  const el2=document.getElementById('sentEmails');if(el2)el2.value='';
+  localStorage.removeItem('blaster_sent_emails');
+  updateSentCount();
+  toast('Sent list cleared','info',2000);
+}
+
+function clearUnsubList(){
+  if(!confirm('Clear the unsubscribe list?'))return;
+  const el2=document.getElementById('unsubEmails');if(el2)el2.value='';
+  localStorage.removeItem('blaster_unsub_emails');
+  updateUnsubCount();
+  toast('Unsub list cleared','info',2000);
+}
+
+// Auto-add to unsub list when someone replies (manual add helper)
+function addUnsub(email){
+  const el2=document.getElementById('unsubEmails');
+  if(!el2)return;
+  const existing=(el2.value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  if(!existing.includes(email.toLowerCase())){
+    existing.push(email.toLowerCase());
+    el2.value=existing.join('\n');
+    saveUnsubList();updateUnsubCount();
+    toast(email+' added to unsubscribe list','warn',3000);
+  }
+}
+
+// Auto-save sent emails to sent history after each blast
+function autoSaveSentEmails(){
+  const sent=sendLog.filter(l=>l.status==='sent'&&l.sentTo).map(l=>l.sentTo.toLowerCase());
+  if(!sent.length)return;
+  const el2=document.getElementById('sentEmails');
+  if(!el2)return;
+  const existing=(el2.value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  const combined=[...new Set([...existing,...sent])];
+  el2.value=combined.join('\n');
+  // Save to localStorage
+  localStorage.setItem('blaster_sent_emails',combined.join('\n'));
+  // Save to server file permanently
+  try{fetch(SERVER+'/api/data/sent_emails',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:combined})}).catch(()=>{});}catch(e){}
+  updateSentCount();
+}
+
+
+/* ═══════════════════════════════════════
+   FOLLOW-UP SEQUENCE ENGINE
+   ═══════════════════════════════════════ */
+
+function getSequences(){
+  try{return JSON.parse(localStorage.getItem('blaster_sequences')||'[]');}catch(e){return[];}
+}
+function saveSequences(s){
+  localStorage.setItem('blaster_sequences',JSON.stringify(s));
+  try{fetch(SERVER+'/api/data/sequences',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:s})}).catch(()=>{});}catch(e){}
+}
+
+function saveFollowupSettings(){
+  localStorage.setItem('blaster_fu_settings',JSON.stringify({
+    fu1Days:document.getElementById('fu1Days')?.value||7,
+    fu2Days:document.getElementById('fu2Days')?.value||7,
+    fuStopAfter:document.getElementById('fuStopAfter')?.value||2,
+    fu1Subj:document.getElementById('fu1Subj')?.value||'',
+    fu1Body:document.getElementById('fu1Body')?.value||'',
+    fu2Subj:document.getElementById('fu2Subj')?.value||'',
+    fu2Body:document.getElementById('fu2Body')?.value||'',
+  }));
+}
+
+function loadFollowupSettings(){
+  try{
+    const s=JSON.parse(localStorage.getItem('blaster_fu_settings')||'{}');
+    if(s.fu1Days)document.getElementById('fu1Days').value=s.fu1Days;
+    if(s.fu2Days)document.getElementById('fu2Days').value=s.fu2Days;
+    if(s.fuStopAfter)document.getElementById('fuStopAfter').value=s.fuStopAfter;
+    if(s.fu1Subj)document.getElementById('fu1Subj').value=s.fu1Subj;
+    if(s.fu1Body)document.getElementById('fu1Body').value=s.fu1Body;
+    if(s.fu2Subj)document.getElementById('fu2Subj').value=s.fu2Subj;
+    if(s.fu2Body)document.getElementById('fu2Body').value=s.fu2Body;
+  }catch(e){}
+}
+
+// Save contacts to sequence after initial blast
+function addToSequence(sentContacts, campaignName){
+  const sequences=getSequences();
+  const now=Date.now();
+  sentContacts.forEach(contact=>{
+    // Don't add if already in sequence
+    const emailKey=(contact._emails&&contact._emails.length)?contact._emails.join(','):String(contact._id);
+    const exists=sequences.find(s=>(s.emails&&s.emails.length?s.emails.join(','):s.id?.split('_')[1])===emailKey);
+    if(exists)return;
+    sequences.push({
+      id: now+'_'+contact._id,
+      first_name: contact.first_name||'',
+      last_name: contact.last_name||'',
+      address: contact.address||'',
+      city: contact.city||'',
+      state: contact.state||'',
+      emails: contact._emails||[],
+      campaign: campaignName||'Unknown',
+      initialSent: now,
+      touch: 1, // currently on touch 1 (initial sent)
+      fu1Sent: null,
+      fu2Sent: null,
+      removed: false,
+      removeReason: '',
+    });
+  });
+  saveSequences(sequences);
+  updateFollowupBadge();
+}
+
+function getDaysDiff(ts){
+  return Math.floor((Date.now()-ts)/(1000*60*60*24));
+}
+
+function getFollowupsDue(){
+  const sequences=getSequences();
+  const fu1Days=parseInt(document.getElementById('fu1Days')?.value||7);
+  const fu2Days=parseInt(document.getElementById('fu2Days')?.value||7);
+  const stopAfter=parseInt(document.getElementById('fuStopAfter')?.value||2);
+  const due=[];
+  sequences.forEach(s=>{
+    if(s.removed)return;
+    // Due for FU1?
+    if(!s.fu1Sent&&s.touch===1&&getDaysDiff(s.initialSent)>=fu1Days){
+      due.push({...s,dueTouch:2,dueLabel:'Follow-up 1'});
+    }
+    // Due for FU2?
+    else if(s.fu1Sent&&!s.fu2Sent&&s.touch===2&&stopAfter>=2&&getDaysDiff(s.fu1Sent)>=fu2Days){
+      due.push({...s,dueTouch:3,dueLabel:'Follow-up 2'});
+    }
+  });
+  return due;
+}
+
+function checkFollowupsDue(){
+  const due=getFollowupsDue();
+  const badge=document.getElementById('followupBadge');
+  const banner=document.getElementById('followupReadyBanner');
+  if(badge){badge.textContent=due.length;badge.style.display=due.length>0?'inline':'none';}
+  if(banner){
+    banner.style.display=due.length>0?'block':'none';
+    el('followupReadyTitle',due.length>0?due.length+' contacts ready for follow-up':'No follow-ups due right now');
+    el('followupReadyMsg',due.length>0?'Click "Send ready follow-ups now" to blast them.':'Check back tomorrow.');
+  }
+  renderSequenceList();
+  updateFollowupStats();
+}
+
+function updateFollowupBadge(){
+  const due=getFollowupsDue();
+  const badge=document.getElementById('followupBadge');
+  if(badge){badge.textContent=due.length;badge.style.display=due.length>0?'inline':'none';}
+}
+
+function renderSequenceList(){
+  const sequences=getSequences();
+  const el2=document.getElementById('sequenceList');
+  if(!el2)return;
+  if(!sequences.length){el2.innerHTML='<div style="font-size:13px;color:#aaa;padding:4px 0">No sequences running yet. Send your first blast to start tracking.</div>';return;}
+  const active=sequences.filter(s=>!s.removed);
+  const removed=sequences.filter(s=>s.removed);
+  const fu1Due=getFollowupsDue().filter(d=>d.dueTouch===2).length;
+  const fu2Due=getFollowupsDue().filter(d=>d.dueTouch===3).length;
+  el2.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+      <div class="stat"><div class="num">${active.length}</div><div class="lbl">Active</div></div>
+      <div class="stat"><div class="num" style="color:#d97706">${fu1Due}</div><div class="lbl">FU1 due</div></div>
+      <div class="stat"><div class="num" style="color:#7c3aed">${fu2Due}</div><div class="lbl">FU2 due</div></div>
+      <div class="stat"><div class="num" style="color:#888">${removed.length}</div><div class="lbl">Completed</div></div>
+    </div>
+    <div style="overflow-x:auto;max-height:300px;overflow-y:auto">
+      <table class="ctable">
+        <thead><tr><th>Contact</th><th>Address</th><th>Campaign</th><th>Initial sent</th><th>Touch</th><th>Next due</th><th></th></tr></thead>
+        <tbody>${sequences.slice(0,100).map(s=>{
+          const fu1Days=parseInt(document.getElementById('fu1Days')?.value||7);
+          const fu2Days=parseInt(document.getElementById('fu2Days')?.value||7);
+          let nextDue='—',touch='Initial sent';
+          if(s.removed){touch='<span class="sbadge s-error">'+s.removeReason+'</span>';}
+          else if(!s.fu1Sent){
+            const daysLeft=fu1Days-getDaysDiff(s.initialSent);
+            nextDue=daysLeft<=0?'<span style="color:#d97706;font-weight:600">Due now</span>':'In '+daysLeft+'d';
+            touch='<span class="sbadge s-pending">Touch 1</span>';
+          }else if(!s.fu2Sent){
+            const daysLeft=fu2Days-getDaysDiff(s.fu1Sent);
+            nextDue=daysLeft<=0?'<span style="color:#7c3aed;font-weight:600">Due now</span>':'In '+daysLeft+'d';
+            touch='<span class="sbadge s-ai">Touch 2</span>';
+          }else{
+            touch='<span class="sbadge s-sent">Complete</span>';
+          }
+          return `<tr>
+            <td>${s.first_name} ${s.last_name}</td>
+            <td title="${s.address}">${s.address}</td>
+            <td style="font-size:11px;color:#888">${s.campaign}</td>
+            <td style="font-size:11px">${new Date(s.initialSent).toLocaleDateString()}</td>
+            <td>${touch}</td>
+            <td style="font-size:12px">${nextDue}</td>
+            <td><button onclick="removeFromSequence('${s.id}')" style="background:none;border:none;cursor:pointer;color:#bbb;font-size:14px" title="Remove">&#x2715;</button></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>`;
+}
+
+function updateFollowupStats(){
+  const el2=document.getElementById('followupStats');
+  if(!el2)return;
+  const seqs=getSequences();
+  const active=seqs.filter(s=>!s.removed).length;
+  const fu1Sent=seqs.filter(s=>s.fu1Sent).length;
+  const fu2Sent=seqs.filter(s=>s.fu2Sent).length;
+  const due=getFollowupsDue().length;
+  el2.innerHTML=`
+    <div class="stat"><div class="num">${active}</div><div class="lbl">In sequence</div></div>
+    <div class="stat"><div class="num" style="color:#d97706">${due}</div><div class="lbl">Due now</div></div>
+    <div class="stat"><div class="num" style="color:#7c3aed">${fu1Sent}</div><div class="lbl">FU1 sent</div></div>
+    <div class="stat"><div class="num" style="color:#166534">${fu2Sent}</div><div class="lbl">FU2 sent</div></div>`;
+}
+
+function removeFromSequence(id){
+  const sequences=getSequences();
+  const s=sequences.find(s=>s.id===id);
+  if(s){s.removed=true;s.removeReason='Removed';}
+  saveSequences(sequences);
+  renderSequenceList();updateFollowupBadge();
+}
+
+function fillFollowupTemplate(contact, subjTemplate, bodyTemplate){
+  const map={
+    first_name:contact.first_name||'',
+    last_name:contact.last_name||'',
+    property_address:contact.address||'',
+    address:contact.address||'',
+    city:contact.city||'',
+    state:contact.state||'',
+    sender_name:document.getElementById('sName')?.value||'',
+    sender_phone:document.getElementById('sPhone')?.value||'',
+  };
+  let subj=subjTemplate,body=bodyTemplate;
+  Object.keys(map).forEach(k=>{
+    subj=subj.replace(new RegExp('{{'+k+'}}','gi'),map[k]);
+    body=body.replace(new RegExp('{{'+k+'}}','gi'),map[k]);
+  });
+  return{subj,body};
+}
+
+let fuSending=false;
+async function sendFollowups(){
+  if(fuSending)return;
+  const due=getFollowupsDue();
+  if(!due.length){alert('No follow-ups due right now. Check back later!');return;}
+  const fuAccounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  if(!fuAccounts.length){alert('Add Gmail accounts in Gmail Setup first.');showTab('sender');return;}
+
+  fuSending=true;
+  const btn=document.getElementById('sendFollowupBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Sending...';
+  document.getElementById('fuBar').style.display='block';
+  document.getElementById('fuLogCard').style.display='block';
+  const fuLog=[];let done=0;
+
+  el('fuSendMsg','Sending '+due.length+' follow-ups...');
+
+  for(const contact of due){
+    const isFU1=contact.dueTouch===2;
+    const subjTpl=isFU1?document.getElementById('fu1Subj').value:document.getElementById('fu2Subj').value;
+    const bodyTpl=isFU1?document.getElementById('fu1Body').value:document.getElementById('fu2Body').value;
+    const {subj,body}=fillFollowupTemplate(contact,subjTpl,bodyTpl);
+    const emails=contact.emails||[];
+    let anySent=false;
+
+    for(const email of emails){
+      // Check daily limit
+      const nowSent=getDailySent(),nowStop=Math.floor(getCap()*(getGmailAccounts?getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass).length||1:1)*getStopPct());
+      if(nowSent>=nowStop){
+        toast('&#x1F6D1; Daily limit hit. Follow-up paused.','danger',8000);
+        fuSending=false;btn.disabled=false;btn.innerHTML='🔁 Send ready follow-ups now';
+        return;
+      }
+      try{
+        const fuAcc=getNextAccount();
+        if(!fuAcc){toast('&#x1F6D1; All accounts at daily limit!','danger',8000);fuSending=false;btn.disabled=false;btn.innerHTML='🔁 Send ready follow-ups now';return;}
+        const d=await sendEmailDirect({user:fuAcc.email,pass:fuAcc.pass,from:fuAcc.email,to:email,subject:subj,text:body,replyTo:fuAcc.email});
+        if(!d.ok)throw new Error(d.error||'Failed');
+        addSent(1);markAccountSent(fuAcc.email);anySent=true;
+        fuLog.push({contact,email,touch:contact.dueLabel,status:'sent',date:new Date().toLocaleDateString()});
+      }catch(e){
+        fuLog.push({contact,email,touch:contact.dueLabel,status:'error',date:new Date().toLocaleDateString()});
+      }
+    }
+
+    // Update sequence record
+    if(anySent){
+      const sequences=getSequences();
+      const seq=sequences.find(s=>s.id===contact.id);
+      if(seq){
+        if(contact.dueTouch===2){seq.fu1Sent=Date.now();seq.touch=2;}
+        else if(contact.dueTouch===3){seq.fu2Sent=Date.now();seq.touch=3;seq.removed=true;seq.removeReason='Completed';}
+        saveSequences(sequences);
+      }
+    }
+
+    done++;
+    document.getElementById('fuFill').style.width=Math.round(done/due.length*100)+'%';
+    updateLimitUI();
+    await sleep(getDelay());
+  }
+
+  fuSending=false;
+  btn.disabled=false;btn.innerHTML='🔁 Send ready follow-ups now';
+  const ok=fuLog.filter(l=>l.status==='sent').length;
+  el('fuSendMsg','Done! '+ok+' follow-ups sent.');
+  document.getElementById('fuLogBody').innerHTML=fuLog.map(l=>`
+    <tr><td>${l.contact.first_name} ${l.contact.last_name}</td><td>${l.contact.address}</td><td style="font-size:12px">${l.email}</td><td><span class="sbadge s-ai">${l.touch}</span></td><td><span class="sbadge s-${l.status}">${l.status}</span></td><td style="font-size:12px">${l.date}</td></tr>`).join('');
+  updateFollowupBadge();renderSequenceList();
+  if(ok>0)toast('&#x2705; '+ok+' follow-ups sent!','success',5000);
+}
+
+function exportSequence(){
+  const seqs=getSequences();
+  if(!seqs.length){alert('No sequences yet.');return;}
+  const h=['first_name','last_name','address','campaign','initial_sent','fu1_sent','fu2_sent','status'];
+  const rows=seqs.map(s=>[
+    '"'+s.first_name+'"','"'+s.last_name+'"','"'+s.address+'"','"'+s.campaign+'"',
+    '"'+new Date(s.initialSent).toLocaleDateString()+'"',
+    '"'+(s.fu1Sent?new Date(s.fu1Sent).toLocaleDateString():'')+'"',
+    '"'+(s.fu2Sent?new Date(s.fu2Sent).toLocaleDateString():'')+'"',
+    '"'+(s.removed?s.removeReason:'Active')+'"'
+  ].join(','));
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([h.join(','),...rows].join('\n'));a.download='sequence_log.csv';a.click();
+}
+
+function clearAllSequences(){
+  if(!confirm('Clear ALL follow-up sequences? This cannot be undone.'))return;
+  localStorage.removeItem('blaster_sequences');
+  renderSequenceList();updateFollowupBadge();updateFollowupStats();
+  toast('All sequences cleared','warn',3000);
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+function resetList(){
+  if(!confirm('Clear the current list and upload a new one?'))return;
+  contacts=[];selectedIds=new Set();sendLog=[];
+  try{localStorage.removeItem('blaster_contacts');localStorage.removeItem('blaster_contacts_ts');}catch(e){}
+  document.getElementById('contacts-section').style.display='none';
+  document.getElementById('no-contacts').style.display='block';
+  document.getElementById('resetListBtn').style.display='none';
+  document.getElementById('resetStatusBtn').style.display='none';
+  document.getElementById('csvIn').value='';
+  document.getElementById('logCard').style.display='none';
+  renderLog();updateStats();updateSendStats();
+  toast('List cleared &mdash; select your new CSV','info',2000);
+  setTimeout(()=>document.getElementById('csvIn').click(),600);
+}
+
+function resetStatuses(){
+  contacts.forEach(c=>{c._status='pending';});
+  try{localStorage.removeItem(getStatusKey());}catch(e){}
+  renderContacts();
+  toast('All contacts marked as pending &mdash; ready to resend','success',3000);
+}
+
+/* ── DRAG DROP ── */
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.style.background='#fafaf8';});
+dz.addEventListener('dragleave',()=>{dz.style.background='';});
+dz.addEventListener('drop',e=>{e.preventDefault();dz.style.background='';const f=e.dataTransfer.files[0];if(f&&f.name.endsWith('.csv')){localStorage.setItem('blaster_active_list',f.name);const r=new FileReader();r.onload=ev=>parseCSV(ev.target.result);r.readAsText(f);}});
+document.getElementById('body').addEventListener('input',function(){updatePreview();autoSaveActiveTemplate();});
+document.getElementById('fu1Subj')?.addEventListener('input',saveFollowupSettings);
+document.getElementById('fu1Body')?.addEventListener('input',saveFollowupSettings);
+document.getElementById('fu2Subj')?.addEventListener('input',saveFollowupSettings);
+document.getElementById('fu2Body')?.addEventListener('input',saveFollowupSettings);
+document.getElementById('subj').addEventListener('input',function(){updatePreview();autoSaveActiveTemplate();});
+document.getElementById('sName').addEventListener('input',updatePreview);
+document.getElementById('sPhone').addEventListener('input',updatePreview);
+
+
+/* CAMPAIGN / TEMPLATE MANAGER */
+function getTemplates(){
+  try{return JSON.parse(localStorage.getItem('blaster_templates')||'[]');}catch(e){return[];}
+}
+function saveTemplates(t){localStorage.setItem('blaster_templates',JSON.stringify(t));}
+
+function saveTemplate(){
+  const subj=document.getElementById('subj').value.trim();
+  const body=document.getElementById('body').value.trim();
+  if(!subj&&!body){alert('Write a template first.');return;}
+  const name=prompt('Name this campaign:\n(e.g. Pre-Foreclosure TX, Expired Listings AZ, Absentee Owners)');
+  if(!name||!name.trim())return;
+  const templates=getTemplates();
+  const existing=templates.findIndex(t=>t.name===name.trim());
+  const entry={name:name.trim(),subj,body,saved:new Date().toLocaleDateString()};
+  if(existing>=0){if(!confirm('Campaign "'+name+'" exists. Overwrite it?'))return;templates[existing]=entry;}
+  else{templates.push(entry);}
+  saveTemplates(templates);
+  renderSavedTemplates();
+  document.getElementById('activeTemplateName').textContent=name.trim();
+  toast('Campaign saved: '+name.trim(),'success',3000);
+}
+
+function loadTemplate(name){
+  const t=getTemplates().find(t=>t.name===name);
+  if(!t)return;
+  document.getElementById('subj').value=t.subj;
+  document.getElementById('body').value=t.body;
+  document.getElementById('activeTemplateName').textContent=t.name;
+  var sat=document.getElementById('sendActiveTemplate');if(sat)sat.textContent=t.name;
+  updatePreview();
+  toast('Loaded: '+name,'info',2500);
+}
+
+function deleteTemplate(name){
+  if(!confirm('Delete campaign "'+name+'"?'))return;
+  saveTemplates(getTemplates().filter(t=>t.name!==name));
+  renderSavedTemplates();
+  toast('Deleted: '+name,'warn',2500);
+}
+
+function newTemplate(){
+  document.getElementById('subj').value='';
+  document.getElementById('body').value='';
+  document.getElementById('activeTemplateName').textContent='New template';
+  document.getElementById('subj').focus();
+}
+
+function renderSavedTemplates(){
+  populateSendTemplatePicker();
+
+  const templates=getTemplates();
+  const container=document.getElementById('savedTemplates');
+  if(!container)return;
+  if(!templates.length){
+    container.innerHTML='<div style="font-size:13px;color:#aaa;padding:4px 0">No saved campaigns yet.</div>';
+    return;
+  }
+  container.innerHTML=templates.map(t=>{
+    const esc=t.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<div style="display:inline-flex;align-items:center;border:1px solid #e5e5e2;border-radius:8px;overflow:hidden;margin:3px">'
+      +'<button onclick="loadTemplate(\''+esc+'\')" style="background:#fff;border:none;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;color:#1a1a1a;font-family:inherit" title="Saved '+t.saved+'">'+t.name+'</button>'
+      +'<div style="width:1px;background:#e5e5e2;align-self:stretch"></div>'
+      +'<button onclick="deleteTemplate(\''+esc+'\')" style="background:#fff;border:none;padding:7px 10px;font-size:13px;cursor:pointer;color:#bbb;font-family:inherit" title="Delete">&times;</button>'
+      +'</div>';
+  }).join('');
+}
+
+
+/* PRELOADED CAMPAIGN TEMPLATES */
+function loadDefaultTemplates(){
+  const existing=getTemplates();
+  const existingNames=existing.map(t=>t.name);
+
+  const defaults=[
+    {
+      name:'Pre-Foreclosure Outreach',
+      subj:'Regarding your property at {{property_address}}',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+I understand you may be going through a difficult time right now, and I want you to know there are options available before things go further.
+
+I'm a local real estate investor and I buy houses directly from homeowners in {{city}} — quickly, in as-is condition, with no fees or commissions. In many cases we can close fast enough to stop the foreclosure process entirely and put cash in your pocket.
+
+There's no obligation to talk, but I'd hate for you to lose the equity you've built without knowing all your options first.
+
+Would you be open to a quick 10-minute call this week?
+
+Respectfully,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    },
+    {
+      name:'Expired / Failed Listing',
+      subj:'Your property on {{address}} — still interested in selling?',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+I noticed your property at {{property_address}} was recently on the market. I'm sorry it didn't sell — that's frustrating after all the showings and waiting.
+
+I'm a local real estate investor in {{property_city}} and I buy houses directly — no listing, no open houses, no commissions, and no repairs needed. If you're still interested in selling, I'd love to make you a straightforward offer.
+
+No games, no lowballing — just an honest conversation about what works for you.
+
+Would you be open to a quick call this week?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    },
+    {
+      name:'Explore Options — Cash or Creative',
+      subj:'A few different ways I could buy your property at {{property_address}}',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+I'm a local real estate investor who buys properties in {{property_city}} and I work a little differently than most buyers — I'm not locked into just one approach.
+
+Depending on what works best for your situation, I can:
+- Pay cash and close quickly (as fast as 7-10 days)
+- Structure seller financing so you receive monthly income
+- Do a lease option or hybrid deal if timing is an issue
+- Take over payments if there's a mortgage involved
+
+Whatever your situation, I'm flexible and I always put the seller's needs first.
+
+Would you be open to a quick 15-minute call to see if there's something that works for you?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    },
+    {
+      name:'Subject-To / Mortgage Takeover',
+      subj:'I may be able to take over your mortgage on {{address}}',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+I'm a local real estate investor and I specialize in something most buyers don't offer — I can take over your existing mortgage payments on {{property_address}}.
+
+This means:
+- You don't need equity to sell
+- No banks, no new financing, no long waits
+- We can close quickly and relieve you of the payments
+- You walk away with relief and in many cases cash at closing
+
+This is called a subject-to purchase and it's completely legal. It's a great option if you have little equity or just need out fast.
+
+I'd love to explain how it works — no commitment, just a 10-minute conversation.
+
+Would you have time this week?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    },
+    {
+      name:'Straight Cash Offer',
+      subj:'Cash offer for your property at {{property_address}}',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+I'm a local cash buyer in {{property_city}} and I'm actively looking to purchase properties in your area right now.
+
+Here's what I offer:
+- All cash, no financing contingencies
+- Close in as little as 7 days — or on your timeline
+- Buy as-is, no repairs or cleaning needed
+- Zero agent commissions or closing costs on your end
+- Simple, straightforward process with no surprises
+
+If you've been thinking about selling, I'd love to give you a number. No obligation and it costs you nothing to find out.
+
+Can we set up a quick call this week?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    },
+    {
+      name:'Absentee Owner',
+      subj:'Quick question about your property at {{property_address}}',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+I came across your property at {{property_address}} and noticed you may not be living there currently. Managing a property from a distance can be a real headache — taxes, maintenance, tenants, liability — and I wanted to reach out in case you've ever considered selling.
+
+I'm a local real estate investor in {{property_city}} and I buy properties as-is, all cash, with a fast and simple closing. No repairs, no agent fees, no hassle.
+
+If the timing is ever right to simplify things and cash out, I'd love to be your first call.
+
+Would you be open to a quick conversation?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    },
+    {
+      name:'High Equity / Long-Term Owner',
+      subj:'Have you ever thought about cashing out on {{address}}?',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+You've owned your property at {{property_address}} for a while now, and I imagine you've built up some solid equity over the years. I wanted to reach out because I'm a local investor actively buying in {{property_city}} and I'd love to give you a cash offer if you've ever had any interest in selling.
+
+No repairs needed, no agent commissions, and we can close on your schedule — whether that's 2 weeks or 6 months from now.
+
+A lot of long-term owners are surprised by what their property is worth today. It might be worth a quick conversation just to know your number.
+
+Would you be open to a brief call?
+
+Best,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    },
+    {
+      name:'Probate Leads',
+      subj:'Regarding the property at {{property_address}}',
+      body:`Hi {{first_name}},
+
+{{ai_opener}}
+
+First, I want to say I'm truly sorry for your loss. I know this is a difficult time and the last thing you need is added stress.
+
+I'm reaching out because I'm a local real estate investor in {{property_city}} who works with families who have inherited property and aren't sure what to do next. If the property at {{property_address}} is something you're looking to sell — whether now or down the road — I can make the process as simple and painless as possible.
+
+I buy as-is for cash, handle all the paperwork, and work entirely on your timeline. There's no pressure and no obligation — just a straightforward option if and when you're ready.
+
+Please don't hesitate to reach out whenever the time feels right.
+
+With respect,
+{{sender_name}}
+{{sender_phone}}
+
+---
+This is a one-time outreach. Reply to be removed from future messages.`
+    }
+  ];
+
+  // Only add templates that don't already exist by name
+  let added=0;
+  defaults.forEach(d=>{
+    if(!existingNames.includes(d.name)){
+      existing.push(d);
+      added++;
+    }
+  });
+  if(added>0){
+    saveTemplates(existing);
+    renderSavedTemplates();
+  }
+}
+
+
+
+/* PERSIST SENDER SETTINGS */
+function saveSenderSettings(){
+  const fields=['sName','sPhone'];
+  fields.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)localStorage.setItem('blaster_'+id,el.value);
+  });
+}
+
+function loadSenderSettings(){
+  const defaults={
+    smtpPass:'eduo ualu eewd nawg'
+  };
+  const fields=['sName','sPhone'];
+  fields.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const saved=localStorage.getItem('blaster_'+id);
+    if(saved!==null&&saved!==''){el.value=saved;}
+    else if(defaults[id]){el.value=defaults[id];localStorage.setItem('blaster_'+id,defaults[id]);}
+    el.addEventListener('input',saveSenderSettings);
+    el.addEventListener('change',saveSenderSettings);
+  });
+}
+
+
+const SERVER_JS = `const express = require('express');
+const nodemailer = require('nodemailer');
+const cors = require('cors');
+const Imap = require('imap');
+const { simpleParser } = require('mailparser');
+const path = require('path');
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname)));
+
+app.get('/ping', (req, res) => res.json({ ok: true }));
+
+app.post('/api/send-email', async (req, res) => {
+  const { smtp, from, to, subject, text, replyTo } = req.body;
+  try {
+    const transporter = nodemailer.createTransporter({
+      host: smtp.host || 'smtp.gmail.com',
+      port: parseInt(smtp.port) || 587,
+      secure: false,
+      auth: { user: smtp.user, pass: smtp.pass },
+      tls: { rejectUnauthorized: false }
+    });
+    await transporter.sendMail({
+      from: from,
+      to: to,
+      subject: subject,
+      text: text,
+      replyTo: replyTo || from
+    });
+    res.json({ ok: true });
+  } catch (e) {
+    res.json({ ok: false, error: e.message });
+  }
+});
+
+app.post('/api/check-replies', async (req, res) => {
+  const { user, pass, since } = req.body;
+  const messages = [];
+  try {
+    await new Promise((resolve, reject) => {
+      const imap = new Imap({
+        user, password: pass,
+        host: 'imap.gmail.com', port: 993, tls: true,
+        tlsOptions: { rejectUnauthorized: false },
+        authTimeout: 10000
+      });
+      imap.once('ready', () => {
+        imap.openBox('INBOX', true, (err, box) => {
+          if (err) { imap.end(); return reject(err); }
+          const sinceDate = since ? new Date(since) : new Date(Date.now() - 7*24*60*60*1000);
+          const dateStr = sinceDate.toDateString();
+          imap.search(['ALL', ['SINCE', dateStr]], (err, uids) => {
+            if (err || !uids.length) { imap.end(); return resolve(); }
+            const fetch = imap.fetch(uids.slice(-100), { bodies: '' });
+            fetch.on('message', (msg) => {
+              msg.on('body', (stream) => {
+                simpleParser(stream, (err, parsed) => {
+                  if (!err && parsed) {
+                    messages.push({
+                      from: parsed.from?.text || '',
+                      fromEmail: parsed.from?.value?.[0]?.address || '',
+                      subject: parsed.subject || '',
+                      text: (parsed.text || '').slice(0, 500),
+                      date: parsed.date?.toISOString() || '',
+                      to: user
+                    });
+                  }
+                });
+              });
+            });
+            fetch.once('end', () => { imap.end(); resolve(); });
+          });
+        });
+      });
+      imap.once('error', reject);
+      imap.connect();
+    });
+    res.json({ ok: true, messages });
+  } catch(e) {
+    res.json({ ok: false, error: e.message, messages: [] });
+  }
+});
+
+app.listen(3456, () => console.log('Email relay running on port 3456'));
+`;
+
+function downloadServerJS(){
+  const a = document.createElement('a');
+  a.href = 'data:text/javascript;charset=utf-8,' + encodeURIComponent(SERVER_JS);
+  a.download = 'server.js';
+  a.click();
+  toast('server.js downloaded — run: npm install express nodemailer cors imap mailparser && node server.js', 'info', 8000);
+}
+
+
+
+/* ── MULTI GMAIL ACCOUNT ROTATION ── */
+function getGmailAccounts(){
+  try{return JSON.parse(localStorage.getItem('blaster_gmail_accounts')||'[]');}catch(e){return[];}
+}
+function saveGmailAccounts(accounts){
+  localStorage.setItem('blaster_gmail_accounts',JSON.stringify(accounts));
+  renderGmailAccounts();
+  updateRotationStatus();
+}
+
+function renderGmailAccounts(){
+  const accounts=getGmailAccounts();
+  const container=document.getElementById('gmailAccountsList');
+  if(!container)return;
+  if(!accounts.length){
+    container.innerHTML='<div style="font-size:13px;color:#aaa;padding:8px 0">No accounts added yet. Click "+ Add account" to add your Gmail accounts.</div>';
+    return;
+  }
+  container.innerHTML=accounts.map((a,i)=>`
+    <div style="background:#fafaf8;border:1px solid #e5e5e2;border-radius:8px;padding:14px 16px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:${i===0?'#1a1a1a':'#e5e5e2'};color:${i===0?'#fff':'#666'};border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600">${i+1}</span>
+          <span style="font-size:13px;font-weight:600;color:#1a1a1a">${a.email||'Account '+(i+1)}</span>
+          ${a.enabled!==false?'<span style="background:#dcfce7;color:#166534;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:600">Active</span>':'<span style="background:#fee2e2;color:#991b1b;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:600">Disabled</span>'}
+        </div>
+        <div style="display:flex;gap:6px">
+          <button onclick="toggleGmailAccount(${i})" class="btn-s" style="padding:4px 10px;font-size:11px">${a.enabled!==false?'Disable':'Enable'}</button>
+          <button onclick="removeGmailAccount(${i})" class="btn-s" style="padding:4px 10px;font-size:11px;color:#991b1b;border-color:#fca5a5">Remove</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label style="font-size:12px;color:#666;display:block;margin-bottom:4px">Gmail address</label>
+          <input type="email" value="${a.email||''}" placeholder="ryan@gmail.com" onchange="updateGmailAccount(${i},'email',this.value)" style="width:100%;border:1px solid #e5e5e2;border-radius:6px;padding:7px 10px;font-size:13px;font-family:inherit" />
+        </div>
+        <div>
+          <label style="font-size:12px;color:#666;display:block;margin-bottom:4px">App Password</label>
+          <input type="text" value="${a.pass||''}" placeholder="xxxx xxxx xxxx xxxx" onchange="updateGmailAccount(${i},'pass',this.value)" style="width:100%;border:1px solid #e5e5e2;border-radius:6px;padding:7px 10px;font-size:13px;font-family:inherit" />
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:#888">Sent today: <strong>${getAccountSentToday(a.email)}</strong> / 500</div>
+    </div>
+  `).join('');
+}
+
+function addGmailAccount(){
+  const accounts=getGmailAccounts();
+  if(accounts.length>=5){toast('Maximum 5 accounts supported','warn',3000);return;}
+  accounts.push({email:'',pass:'',enabled:true,sentToday:0,lastReset:new Date().toDateString()});
+  saveGmailAccounts(accounts);
+}
+
+function removeGmailAccount(idx){
+  const accounts=getGmailAccounts();
+  accounts.splice(idx,1);
+  saveGmailAccounts(accounts);
+}
+
+function toggleGmailAccount(idx){
+  const accounts=getGmailAccounts();
+  accounts[idx].enabled=accounts[idx].enabled===false?true:false;
+  saveGmailAccounts(accounts);
+}
+
+function updateGmailAccount(idx,field,value){
+  const accounts=getGmailAccounts();
+  accounts[idx][field]=value;
+  saveGmailAccounts(accounts);
+}
+
+function updateRotationStatus(){
+  const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  const el2=document.getElementById('rotationStatus');
+  if(!el2)return;
+  if(!accounts.length){el2.innerHTML='<span style="color:#aaa">No active accounts configured.</span>';return;}
+  const totalCap=accounts.length*500;
+  const totalSent=accounts.reduce((s,a)=>s+getAccountSentToday(a.email),0);
+  el2.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px">
+      <div class="stat"><div class="num">${accounts.length}</div><div class="lbl">Active accounts</div></div>
+      <div class="stat"><div class="num" style="color:#166534">${totalSent}</div><div class="lbl">Sent today (total)</div></div>
+      <div class="stat"><div class="num">${totalCap}</div><div class="lbl">Daily capacity</div></div>
+    </div>
+    <div style="font-size:12px;color:#666">Rotation: ${accounts.map((a,i)=>'<strong>'+(i+1)+'.</strong> '+a.email).join(' &rarr; ')} &rarr; repeat</div>`;
+}
+
+// Get next account in rotation
+let rotationIdx=0;
+function getNextAccount(){
+  const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  if(!accounts.length)return null;
+  // Reset daily counts and confirmed-maxed flags if new day
+  const today=new Date().toDateString();
+  const allAccounts=getGmailAccounts();
+  let changed=false;
+  allAccounts.forEach(a=>{
+    if(a.lastReset!==today){
+      a.sentToday=0;
+      a.lastReset=today;
+      a.confirmedMaxed=false; // reset suspension on new day
+      changed=true;
+    }
+  });
+  if(changed)saveGmailAccounts(allAccounts);
+  // Skip accounts that are confirmed maxed OR have hit their per-account cap
+  const perCap=getCap();
+  let tries=0;
+  while(tries<accounts.length){
+    const acc=accounts[rotationIdx%accounts.length];
+    rotationIdx++;
+    const sentToday=getAccountSentToday(acc.email);
+    if(!acc.confirmedMaxed&&sentToday<perCap)return acc;
+    // Auto-mark as maxed if over cap
+    if(sentToday>=perCap&&!acc.confirmedMaxed){
+      acc.confirmedMaxed=true;saveGmailAccounts(accounts);
+      showSuspendedBanner(acc.email);
+    }
+    tries++;
+  }
+  return null; // all accounts at cap
+}
+
+function markAccountMaxed(email){
+  // Mark account as confirmed maxed - only skip it when this flag is set
+  const accounts=getGmailAccounts();
+  const acc=accounts.find(a=>a.email===email);
+  if(acc){acc.confirmedMaxed=true;saveGmailAccounts(accounts);}
+}
+
+function markAccountSent(email){
+  // Track per-account daily sent in localStorage keyed by date+email
+  const key='blaster_acct_'+new Date().toISOString().slice(0,10)+'_'+email;
+  const cur=parseInt(localStorage.getItem(key)||'0');
+  localStorage.setItem(key,cur+1);
+  // Also update the accounts array for display
+  const accounts=getGmailAccounts();
+  const acc=accounts.find(a=>a.email===email);
+  if(acc){acc.sentToday=cur+1;saveGmailAccounts(accounts);}
+}
+
+function getAccountSentToday(email){
+  const key='blaster_acct_'+new Date().toISOString().slice(0,10)+'_'+email;
+  return parseInt(localStorage.getItem(key)||'0');
+}
+
+function loadGmailSetup(){
+  // Migrate old single-account setup to new multi-account if needed
+  const existing=getGmailAccounts();
+  if(!existing.length){
+    const oldUser=localStorage.getItem('blaster_smtpUser');
+    const oldPass=localStorage.getItem('blaster_smtpPass');
+    if(oldUser&&oldPass){
+      saveGmailAccounts([{email:oldUser,pass:oldPass,enabled:true,sentToday:0,lastReset:new Date().toDateString()}]);
+      toast('Migrated your existing Gmail account to the new multi-account system','info',4000);
+    }
+  }
+  renderGmailAccounts();
+  updateRotationStatus();
+}
+
+/* ── STATUS PERSISTENCE ── */
+function getStatusKey(){return 'blaster_statuses_'+btoa(encodeURIComponent((contacts[0]||{}).property_address||'').slice(0,20)).slice(0,12);}
+function saveStatuses(){
+  if(!contacts.length)return;
+  const map={};
+  contacts.forEach(c=>{if(c._status&&c._status!=='pending')map[c._emails&&c._emails[0]||c._id]=c._status;});
+  // Save to both localStorage AND server file
+  try{localStorage.setItem('blaster_statuses_global',JSON.stringify(map));}catch(e){}
+  try{localStorage.setItem(getStatusKey(),JSON.stringify(map));}catch(e){}
+  try{fetch(SERVER+'/api/data/contacts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:{contacts:contacts.map(c=>({...c,_emailsRaw:undefined})),ts:Date.now()}})}).catch(()=>{});}catch(e){}
+}
+function loadStatuses(){
+  if(!contacts.length)return;
+  try{
+    // Try global key first (works across list reloads)
+    const globalMap=JSON.parse(localStorage.getItem('blaster_statuses_global')||'{}');
+    const localMap=JSON.parse(localStorage.getItem(getStatusKey())||'{}');
+    const map={...globalMap,...localMap};
+    // Also check sent emails list AND send log history
+    const sentList=getSentEmails();
+    // Build a set from send log history too
+    const historyEmails=new Set();
+    try{
+      const hist=JSON.parse(localStorage.getItem('blaster_send_log_history')||'[]');
+      hist.filter(l=>l.status==='sent'&&l.sentTo).forEach(l=>historyEmails.add(l.sentTo.toLowerCase()));
+    }catch(e2){}
+    let restored=0;
+    contacts.forEach(c=>{
+      const key=c._emails&&c._emails[0]||c._id;
+      const email=(c._emails&&c._emails[0]||'').toLowerCase();
+      // Mark as sent if in status map, sent list, or send log history
+      if((map[key]&&map[key]==='sent')||sentList.includes(email)||historyEmails.has(email)){
+        c._status='sent';restored++;
+      }
+    });
+    if(restored>0){
+      renderContacts();updateStats();updateSendStats();
+      toast('&#x1F4BE; Restored '+restored+' sent statuses from last session','info',4000);
+    }
+  }catch(e){}
+}
+
+/* ── CONTACT PERSISTENCE ── */
+function saveContactsToStorage(){
+  if(!contacts.length)return;
+  try{
+    // Save contacts without _emailsRaw to keep size down (will rebuild from _emails)
+    const toSave=contacts.map(c=>({...c,_emailsRaw:undefined}));
+    localStorage.setItem('blaster_contacts',JSON.stringify(toSave));
+    localStorage.setItem('blaster_contacts_ts',Date.now());
+  }catch(e){console.log('Could not save contacts:',e);}
+}
+
+function loadContactsFromStorage(){
+  try{
+    const saved=localStorage.getItem('blaster_contacts');
+    const ts=localStorage.getItem('blaster_contacts_ts');
+    if(!saved)return false;
+    const age=(Date.now()-parseInt(ts||0))/(1000*60*60*24);
+    if(age>7){localStorage.removeItem('blaster_contacts');return false;} // expire after 7 days
+    contacts=JSON.parse(saved);
+    // Rebuild _emailsRaw from _emails
+    contacts.forEach(c=>{if(!c._emailsRaw)c._emailsRaw=[...( c._emails||[])];});
+    // Default: only select MV verified contacts
+    const _mvCache2=getMVCache?getMVCache():{};
+    selectedIds=new Set(contacts.filter(c=>{
+      const emails=c._emails||[];
+      if(!emails.length||c._status==='sent')return false;
+      return emails.every(e=>{const r=_mvCache2[e.toLowerCase()];return r&&['ok','catch_all'].includes(r.result);});
+    }).map(c=>c._id));
+    // If no MV verified contacts yet, fall back to all with emails
+    if(selectedIds.size===0)selectedIds=new Set(contacts.filter(c=>c._emails&&c._emails.length>0&&c._status!=='sent').map(c=>c._id));
+    renderContacts();
+    renderTags(Object.keys(contacts[0]||{}).filter(k=>!k.startsWith('_')));
+    document.getElementById('contacts-section').style.display='block';
+    document.getElementById('no-contacts').style.display='none';
+    document.getElementById('noAi').textContent='Click "Generate openers" to create AI-personalized opening lines.';
+    const rb=document.getElementById('resetListBtn');if(rb)rb.style.display='inline-flex';
+    const sb=document.getElementById('resetStatusBtn');if(sb)sb.style.display='inline-flex';
+    const mb=document.getElementById('mergeListBtn');if(mb)mb.style.display='inline-flex';
+    updateSendStats();updateStats();
+    loadStatuses();
+    const withEmail=contacts.filter(c=>c._emails&&c._emails.length>0).length;
+    toast('&#x1F4BE; Restored '+contacts.length+' contacts ('+withEmail+' with email) from last session','info',4000);
+    return true;
+  }catch(e){return false;}
+}
+
+/* ── SEND MODE (auto rotate vs manual pick) ── */
+function updateSendModeUI(){
+  const mode=document.querySelector('input[name="sendMode"]:checked')?.value||'auto';
+  const picker=document.getElementById('manualAccountPicker');
+  if(picker)picker.style.display=mode==='manual'?'block':'none';
+  if(mode==='manual')populateManualPicker();
+}
+
+function populateManualPicker(){
+  const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+  const sel=document.getElementById('manualAccountSelect');
+  const testSel=document.getElementById('testAccountSelect');
+  if(sel){
+    const prevVal=sel.value;
+    sel.innerHTML=accounts.map((a,i)=>`<option value="${i}">${a.email} (${getAccountSentToday(a.email)}/500 today)</option>`).join('');
+    if(prevVal&&sel.querySelector(`option[value="${prevVal}"]`))sel.value=prevVal;
+  }
+  if(testSel){
+    const prevTest=testSel.value;
+    testSel.innerHTML=accounts.map((a,i)=>`<option value="${i}">${a.email} (${getAccountSentToday(a.email)} sent)</option>`).join('');
+    if(prevTest&&testSel.querySelector(`option[value="${prevTest}"]`))testSel.value=prevTest;
+  }
+}
+
+function getSelectedAccount(){
+  const mode=document.querySelector('input[name="sendMode"]:checked')?.value||'auto';
+  if(mode==='manual'){
+    const idx=parseInt(document.getElementById('manualAccountSelect')?.value||'0');
+    const accounts=getGmailAccounts().filter(a=>a.enabled!==false&&a.email&&a.pass);
+    return accounts[idx]||null;
+  }
+  return null;
+}
+
+
+/* ── AUTO UPDATE ── */
+const GITHUB_RAW_URL='https://raw.githubusercontent.com/RWATSON0223/ryans-blaster/main/RYANS_BLASTER_FINAL_05-26-2026.html';
+
+async function checkForUpdate(){
+  const btn=document.getElementById('updateBtn');
+  btn.textContent='Checking...';btn.style.opacity='0.7';
+  try{
+    const res=await fetch(GITHUB_RAW_URL+'?t='+Date.now());
+    if(!res.ok)throw new Error('Could not reach GitHub');
+    const newHtml=await res.text();
+    // Compare size as a simple version check
+    const currentSize=document.documentElement.outerHTML.length;
+    const newSize=newHtml.length;
+    if(Math.abs(newSize-currentSize)<500){
+      toast('&#x2705; Already up to date!','success',3000);
+      btn.textContent='&#x21BA; Up to date';btn.style.opacity='1';
+      return;
+    }
+    // New version available - download it
+    if(confirm('New version available! Click OK to download it.\n\nAfter downloading:\n1. Delete the old HTML from blaster-server folder\n2. Drag the new one in\n3. Refresh the page')){
+      const a=document.createElement('a');
+      a.href='data:text/html;charset=utf-8,'+encodeURIComponent(newHtml);
+      a.download='RYANS_BLASTER_FINAL_05-26-2026.html';
+      a.click();
+      toast('&#x2B07; New version downloaded! Replace the file in your blaster-server folder.','purple',8000);
+    }
+  }catch(e){
+    toast('&#x274C; Could not check for updates: '+e.message,'danger',5000);
+  }
+  btn.textContent='&#x21BA; Check for update';btn.style.opacity='1';
+}
+
+// Reset send button state on load (in case of crashed session)
+sending=false;pauseRequested=false;
+if(typeof resetSendButton==='function')resetSendButton();
+
+// Reset confirmedMaxed flags on every load
+const _accts=getGmailAccounts();
+if(_accts.length){_accts.forEach(a=>{a.confirmedMaxed=false;});saveGmailAccounts(_accts);}
+
+checkServer();
+updateLimitUI();
+loadSendLog();
+renderSuspendedBanner();
+setInterval(renderSuspendedBanner, 60000);
+loadFilterSettings();
+if(typeof renderMVCacheStats==='function')renderMVCacheStats();
+loadFollowupSettings();
+setInterval(()=>{updateFollowupBadge();},60000);
+loadSenderSettings();
+loadGmailSetup();
+loadContactsFromStorage();
+loadDefaultTemplates();
+renderSavedTemplates();
+</script>
+</body>
+</html>
